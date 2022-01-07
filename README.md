@@ -7,7 +7,7 @@ Please note: I have just started to learn how to use Blender. The 3D drawings ar
 I use Blender to design my project. You can import in your Blender the "fullArm.blend" file.
 
 ## Actuators
-For the actuators I use the opensource OpenTorque Actuator project made by Gabrael Levine.
+For the actuators I use the opensource OpenTorque Actuator project made by [Gabrael Levine](https://hackaday.io/project/159404-opentorque-actuator).
 I use more particularly the redesigned OpenTorque Actuator, by the Youtuber [Skyentific](https://www.youtube.com/c/Skyentific), then redesigned again by [RevisonNr3](https://www.thingiverse.com/thing:5155183) / [acisre](https://discourse.odriverobotics.com/t/opentorque-project-new-design/8280).
 Finals Actuators STL Files are in the folder "openTorqueFiles".
 
