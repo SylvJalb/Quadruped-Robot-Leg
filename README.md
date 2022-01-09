@@ -1,4 +1,5 @@
 # Quadruped Robot (Only front right leg)
+![Full Leg](./images/leg.png)
 
 ## 🚨 Disclaimer
 Please note: I have just started to learn how to use Blender. The 3D drawings are not yet completed! Any informative comment, or participation in the project is welcome ;)
@@ -13,9 +14,7 @@ Finals Actuators STL Files are in the folder "openTorqueFiles".
 
 ## TO DO LIST :
 - [x] Import the Opentorque remaked project in my 3D plan.
-- [x] Draw the shoulder in 3D
-- [x] Draw the arm in 3D
-- [x] Draw the forearm in 3D
+- [x] Design the leg in 3D.
 - [ ] Validate the full 3D plan by a pro.
 - [ ] Print all, and make it.
 - [ ] Develop sofware to move the leg.
