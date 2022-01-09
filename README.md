@@ -14,8 +14,8 @@ Finals Actuators STL Files are in the folder "openTorqueFiles".
 ## TO DO LIST :
 - [x] Import the Opentorque remaked project in my 3D plan.
 - [x] Draw the shoulder in 3D
-- [ ] Draw the arm in 3D
-- [ ] Draw the forearm in 3D
+- [x] Draw the arm in 3D
+- [x] Draw the forearm in 3D
 - [ ] Validate the full 3D plan by a pro.
 - [ ] Print all, and make it.
 - [ ] Develop sofware to move the leg.
