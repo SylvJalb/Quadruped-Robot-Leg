@@ -15,7 +15,9 @@ Finals Actuators STL Files are in the folder "openTorqueFiles".
 ## TO DO LIST :
 - [x] Import the Opentorque remaked project in my 3D plan.
 - [x] Design the leg in 3D.
-- [x] Make it printable with 3D printer
-- [ ] Validate the full 3D plan by a pro.
-- [ ] Print all, and make it.
+- [x] Make it printable with 3D printer.
+- [ ] Print all, and make it.   
+  (See you around... hum... middle of February 2022 maybe?! the time that I receive all the components coming from china and that I print the parts.)
+- [ ] Correct the latest mistakes.
+- [ ] Write the assembly manual.
 - [ ] Develop sofware to move the leg.
