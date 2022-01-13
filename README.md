@@ -5,7 +5,7 @@
 Please note: I have just started to learn how to use Blender. The 3D drawings are not yet completed! Any informative comment, or participation in the project is welcome ;)
 
 ## Software
-I use Blender to design my project. You can import in your Blender the "fullArm.blend" file.
+I use Blender to design my project. You can import in your Blender the "leg.blend" file.
 
 ## Actuators
 For the actuators I use the opensource OpenTorque Actuator project made by [Gabrael Levine](https://hackaday.io/project/159404-opentorque-actuator).
