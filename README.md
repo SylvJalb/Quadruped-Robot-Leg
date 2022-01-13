@@ -42,7 +42,7 @@ I STILL NOT FINISHED THE PROJECT! So some components may not be correct yet.
 ***PLA, Nylon, and screws for the leg are missing in the table!***
 
 So for around 630 € you can fully do this leg. If you plan to do others, know that some components can be used for several legs ...
-For 4 legs, I think it could cost 600 euros per leg. However this fast calcul does not include the price of the tools, plastic, the battery (for autonomous robot), and the raspberry pi (for example).
+For 4 legs, I think it could cost 550 euros per leg. However this fast calcul does not include the price of the tools, the battery (for autonomous robot), and the raspberry pi (for example).
 
 # TO DO LIST :
 - [x] Import the Opentorque remaked project in my 3D plan.
