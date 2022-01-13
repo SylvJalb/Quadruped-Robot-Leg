@@ -20,6 +20,7 @@ I STILL NOT FINISHED THE PROJECT! So some components may not be correct yet.
 | Trapezoid toothed belts | 1 | 70c x 2cm | 20€ | [Amazon](https://www.amazon.fr/gp/product/B092PTVXP8/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&th=1) |
 | Rubber ball | 1 | diameter: 6cm | 8€ | [Amazon](https://www.amazon.fr/gp/product/B00LSO64DY/ref=ppx_yo_dt_b_asin_title_o01_s00?ie=UTF8&th=1) |
 | Steel cylinder | 3 | 8 x 100mm | 8€ | [Amazon](https://www.amazon.fr/gp/product/B081JNJPV2/ref=ppx_yo_dt_b_asin_title_o02_s00?ie=UTF8&psc=1) |
+| Steel cylinder | 1 | 3 x 28mm | 1€ | [Amazon](https://www.amazon.fr/dp/B07MBNXDT3?psc=1&smid=A38WCF64ZZVDKC&ref_=chk_typ_imgToDp) |
 | Ball bearing | 6 | 70 x 90 x 10mm | 57€ | [Aliexpress](https://fr.aliexpress.com/item/763194187.html?spm=a2g0o.9042311.0.0.2f326c37LDlLac) |
 | Ball bearing | 18 | 15 x 28 x 7mm  | 20€ | [Aliexpress](https://fr.aliexpress.com/item/900706083.html?spm=a2g0o.9042311.0.0.2f326c37LDlLac) |
 | Ball bearing | 4 | 8 x 22 x 7mm | 14€ | [Aliexpress](https://fr.aliexpress.com/item/4000984095586.html?spm=a2g0o.productlist.0.0.61861a5d8KFBDv&algo_pvid=ec68e3f1-2c37-41c1-afe2-a78161561c80&aem_p4p_detail=20220113064419712349172646800007422009&algo_exp_id=ec68e3f1-2c37-41c1-afe2-a78161561c80-9&pdp_ext_f=%7B%22sku_id%22%3A%2210000013194931970%22%7D&pdp_pi=-1%3B3.72%3B-1%3B-1%40salePrice%3BEUR%3Bsearch-mainSearch) |
@@ -38,10 +39,10 @@ I STILL NOT FINISHED THE PROJECT! So some components may not be correct yet.
 | Brushless motor | 3 | W9235 (X8318S) | 170€ | [Aliexpress](https://fr.aliexpress.com/item/4001103601935.html?spm=a2g0o.9042311.0.0.2f326c37LDlLac) |
 | Cables |  | 2m | 1€ | [Aliexpress](https://fr.aliexpress.com/item/1005001876779326.html?spm=a2g0o.9042311.0.0.20926c37dbOLOt) |
 
-**TOTAL : ~ 627 EUR** *(~ 720 USD)*   
+**TOTAL : ~ 628 EUR** *(~ 720 USD)*   
 ***PLA, Nylon, and screws for the leg are missing in the table!***
 
-So for around 630 € you can fully do this leg. If you plan to do others, know that some components can be used for several legs ...
+So for around 630 € you can fully do this leg. If you want to do others, be aware that some components can be used for several legs ...
 For 4 legs, I think it could cost 550 euros per leg. However this fast calcul does not include the price of the tools, the battery (for autonomous robot), and the raspberry pi (for example).
 
 # TO DO LIST :
