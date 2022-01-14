@@ -5,20 +5,23 @@ Model: [Ender 3 Pro](https://www.creality3dofficial.com/products/creality-ender-
 
 
 ## Leg
+- Wall thickness: 0.4mm   
+- Deactivate "Mesh Fixes" > "Union Overlapping Volumes"
+
 | Part | Material | Nozzle Size | Thickness | Infill | Support | Adhesion | Weight | Remark |
-|:-----|:------:|:------:|:-------:|:------:|:-------:|:------:|:------:|:------|
-| arm_case_lid | PLA | 0.4 | 0.2 |  |  |  |  |  |
-| arm_case_part1 | PLA | 0.4 | 0.28 | 100% | Yes | No | 489g |  |
-| arm_case_part2 | PLA | 0.4 | 0.28 | 100% | Yes | No | 360g |  |
-| arm_holder | PLA | 0.6 | 0.28 | 100% | Yes | No |  |  |
-| arm_separator | PLA | 0.4 | 0.28 | 100% | No | No | 39g |  |
+|:----|:------:|:------:|:-------:|------:|:-------:|:------:|------:|:------|
+| arm_case_lid | PLA | 0.8 | 0.32 | 80% | No | No | 103g |  |
+| arm_case_part1 | PLA | 0.8 | 0.32 | 50% | Yes | No | 408g |  |
+| arm_case_part2 | PLA | 0.8 | 0.32 | 50% | Yes | No | 281g |  |
+| arm_holder | PLA | 0.8 | 0.32 | 50% | Yes | No | 423g |  |
+| arm_separator | PLA | 0.8 | 0.32 | 100% | No | No | 40g |  |
 | foot_holder_part1 | PLA | 0.4 | 0.2 | 50% | Yes | No | 21g |  |
 | foot_holder_part2 | PLA | 0.4 | 0.2 | 50% | Yes | No | 21g |  |
 | forearm_holder | PLA | 0.4 | 0.2 | 50% | Yes | No | 100g |  |
-| shoulder_case | PLA | 0.6 | 0.28 | 100% | Yes | Yes | 959g | Deactivate "Mesh Fixes" > "Union Overlapping Volumes" |
-| shoulder_holder_back | PLA | 0.4 | 0.2 |  |  |  |  |  |
-| shoulder_holder_front | PLA | 0.4 | 0.2 |  |  |  |  |  |
-| shoulder_separator | PLA | 0.4 | 0.28 | 100% | No | No | 39g |  |
+| shoulder_case | PLA | 0.8 | 0.32 | 60% | Yes | Yes | 817g |  |
+| shoulder_holder_back | PLA | 0.8 | 0.32 | 30% | Yes | No | 354g |  |
+| shoulder_holder_front | PLA | 0.8 | 0.32 | 30% | No | No | 146g |  |
+| shoulder_separator | PLA | 0.8 | 0.32 | 100% | No | No | 40g |  |
 
 ## OpenTorque Actuator
 | Part | Material | Nozzle Size | Thickness | Infill | Support | Weight |
