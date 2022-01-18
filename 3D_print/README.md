@@ -27,17 +27,17 @@ Model: [Ender 3 Pro](https://www.creality3dofficial.com/products/creality-ender-
 
 ## OpenTorque Actuator
 - Wall thickness: 2.4mm
+- No Adhesion plate
 
 | Part | Material | Nozzle Size | Thickness | Infill | Support | Weight |
 |:-----|:------:|:------:|:-------:|:------:|:-------:|:------:|
-| actuator_housing_2_acisre | PLA | 0.8 | 0.28 | 50% | 50° | 142g |
-| actuator_housing_acisre |  |  |  |  |  |  |
-| backplate_acisre |  |  |  |  |  |  |
-| encoder_cover_acisre |  |  |  |  |  |  |
-| front_clamp_ring_acisre |  |  |  |  |  |  |
-| magnet_holder |  |  |  |  |  |  |
-| planet_carrier_2_acisre |  |  |  |  |  |  |
-| planet_carrier_acisre |  |  |  |  |  |  |
-| planet_gear_acisre |  |  |  |  |  |  |
-| stand |  |  |  |  |  |  |
-| sun_gear_acisre |  |  |  |  |  |  |
+| actuator_housing_2_acisre | PLA | 0.4 | 0.28 | 50% | 50° | 142g |
+| actuator_housing_acisre | Nylon |  |  |  |  |  |
+| backplate_acisre | PLA | 0.4 | 0.28 | 50% | No | 41g |
+| encoder_cover_acisre | PLA | 0.4 | 0.28 | 20% | No | 11g |
+| front_clamp_ring_acisre | PLA | 0.4 | 0.28 | 50% | No | 14g |
+| magnet_holder | PLA | 0.4 | 0.28 | 30% | No | 2g |
+| planet_carrier_2_acisre | PLA | 0.4 | 0.28 | 50% | 35° | 41g |
+| planet_carrier_acisre | PLA | 0.4 | 0.28 | 50% | 35° | 68g |
+| planet_gear_acisre | Nylon |  |  |  |  |  |
+| sun_gear_acisre | Nylon |  |  |  |  |  |
