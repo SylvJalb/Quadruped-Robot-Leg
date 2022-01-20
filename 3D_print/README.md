@@ -18,7 +18,7 @@ Model: [Ender 3 Pro](https://www.creality3dofficial.com/products/creality-ender-
 | foot_holder_part1 | PLA | 0.4 | 0.2 | 50% | 35° | No | 21g |
 | foot_holder_part2 | PLA | 0.4 | 0.2 | 50% | 35° | No | 21g |
 | forearm_holder | PLA | 0.4 | 0.2 | 50% | 35° | No | 100g |
-| shoulder_case | PLA | 0.8 | 0.32 | 30% | 35° | Yes | 695g |
+| shoulder_case | PLA | 0.8 | 0.32 | 50% | 35° | Yes | 576g |
 | shoulder_holder_back | PLA | 0.8 | 0.32 | 30% | 35° | No | 354g |
 | shoulder_holder_front | PLA | 0.8 | 0.32 | 30% | No | No | 146g |
 | shoulder_separator | PLA | 0.8 | 0.32 | 100% | No | No | 40g |
