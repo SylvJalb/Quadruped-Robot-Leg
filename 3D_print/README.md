@@ -11,7 +11,7 @@ Filament size: 1.75mm
 ### > PLA
 Use PLA Generic default settings in Cura, and change :
 - Wall thickness: 4mm   
-- Deactivate "Mesh Fixes" > "Union Overlapping Volumes"
+<!--- - Deactivate "Mesh Fixes" > "Union Overlapping Volumes" -->
 
 | Part | Nozzle Size | Thickness | Infill | Support | Adhesion | Weight |
 |:----|:------:|:-------:|------:|:-------:|:------:|------:|
@@ -23,7 +23,7 @@ Use PLA Generic default settings in Cura, and change :
 | foot_holder_part1 | 0.4 | 0.2 | 50% | 35° | No | 23g |
 | foot_holder_part2 | 0.4 | 0.2 | 50% | 35° | No | 22g |
 | forearm_holder | 0.4 | 0.2 | 50% | 35° | No | 100g |
-| shoulder_case | 0.8 | 0.32 | 50% | 35° | Yes | 576g |
+| shoulder_case | 0.8 | 0.32 | 50% | 51° | Yes | 564g |
 | shoulder_holder_back | 0.8 | 0.32 | 30% | 35° | No | 354g |
 | shoulder_holder_front | 0.8 | 0.32 | 30% | No | No | 146g |
 | shoulder_separator | 0.8 | 0.32 | 100% | No | No | 40g |
