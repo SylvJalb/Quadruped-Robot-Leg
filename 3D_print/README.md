@@ -15,17 +15,17 @@ Use PLA Generic default settings in Cura, and change :
 
 | Part | Nozzle Size | Thickness | Infill | Support | Adhesion | Weight |
 |:----|:------:|:-------:|------:|:-------:|:------:|------:|
-| arm_case_lid | 0.8 | 0.32 | 30% | No | No | 74g |
-| arm_case_part1 | 0.8 | 0.32 | 30% | 35° | No | 371g |
-| arm_case_part2 | 0.8 | 0.32 | 50% | 35° | No | 281g |
+| arm_case_lid | 0.8 | 0.32 | 50% | No | No | 54g |
+| arm_case_part1 | 0.8 | 0.32 | 30% | 51° | No | 197g |
+| arm_case_part2 | 0.8 | 0.32 | 50% | 51° | No | 192g |
 | arm_holder | 0.8 | 0.32 | 30% | 35° | No | 369g |
 | arm_separator | 0.8 | 0.32 |  | No | No |  |
 | foot_holder_part1 | 0.4 | 0.2 | 50% | 35° | No | 23g |
 | foot_holder_part2 | 0.4 | 0.2 | 50% | 35° | No | 22g |
 | forearm_holder | 0.4 | 0.2 | 50% | 35° | No | 100g |
 | shoulder_case | 0.8 | 0.32 | 50% | 51° | Yes | 564g |
-| shoulder_holder_back | 0.8 | 0.32 | 30% | 35° | No | 354g |
-| shoulder_holder_front | 0.8 | 0.32 | 30% | No | No | 146g |
+| shoulder_holder_back | 0.8 | 0.32 | 30% | 51° | No | 282g |
+| shoulder_holder_front | 0.8 | 0.32 | 30% | No | No | 107g |
 | shoulder_separator | 0.8 | 0.32 | 100% | No | No | 40g |
 
 ### > Nylon
