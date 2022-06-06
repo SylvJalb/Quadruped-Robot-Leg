@@ -49,7 +49,8 @@ For 4 legs, I think it could cost 550 euros per leg. However this fast calcul do
 - [x] Import the Opentorque remaked project in my 3D plan.
 - [x] Design the leg in 3D.
 - [x] Make it printable with 3D printer.
-- [ ] Print all, and make it. (Aslmost done)   
+- [X] Print all
+- [ ] Assemble it. (Aslmost done)   
 - [ ] Correct the latest mistakes.
 - [ ] Write the assembly manual.
 - [ ] Develop sofware to move the leg.
