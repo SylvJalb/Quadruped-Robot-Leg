@@ -55,7 +55,7 @@ For 4 legs, I think it could cost 550 euros per leg. However this fast calcul do
 - [X] Print & Assemble motors.      
 - [X] Test motors.      
 - [X] Print & Assemble leg.     
-- [X] Make a test support.      
+- [X] Make a simple wood testing workbench.      
 - [ ] Test leg & Correct the latest mistakes.       
 - [ ] Write the assembly manual.        
 - [ ] Develop sofware to move the leg.      
