@@ -1,5 +1,3 @@
-🚨 All this instructions are not been tested yet.
-
 # Print informations
 
 Brand: [Creality](https://www.creality3dofficial.com/)  
@@ -23,32 +21,13 @@ Use PLA Generic default settings in Cura, and change :
 | foot_holder_part1 | 0.4 | 0.2 | 50% | 35° | No | 23g |
 | foot_holder_part2 | 0.4 | 0.2 | 50% | 35° | No | 22g |
 | forearm_holder | 0.4 | 0.2 | 50% | 35° | No | 100g |
-| forearm_gear_arm | 0.4 | 0.16 | 50% | No | No | ? |
+| forearm_gear_arm | 0.4 | 0.16 | 60% | No | No | 51g |
 | forearm_gear_knee | 0.4 | 0.16 | 30% | No | No | 28g |
 | forearm_separators (1&2) | 0.4 | 0.32 | 100% | No | No | 3g |
 | shoulder_case | 0.8 | 0.32 | 50% | 51° | Yes | 564g |
 | shoulder_holder_back | 0.8 | 0.32 | 30% | 51° | No | 282g |
 | shoulder_holder_front | 0.8 | 0.32 | 30% | No | No | 107g |
 | shoulder_separator | 0.8 | 0.32 | 40% | No | No | 30g |
-
-### > Nylon
-Use PLA Generic default settings in Cura, and change :
-- nozzle size: 0.4mm
-- Layer height: 0.2mm
-- Wall thickness: 0.8mm
-- Printing temperature: 250°C
-- Build plate temperature: 100°C
-- Printing speed: 35mm/s
-- Retraction distance: 1.5mm
-- Minimum extrusion distance window: 3mm
-- No Adhesion plate
-- Disable Print Cooling
-- No support
-
-| Part | Infill | Weight |
-|:-----|:------:|:------:|
-| forearm_gear_arm | 30% |  |
-| forearm_gear_knee | 30% |  |
 
 ### > TPU 95A
 Use TPU 95A Generic default settings in Cura, and change :
