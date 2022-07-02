@@ -57,5 +57,5 @@ For 4 legs, I think it could cost 550 euros per leg. However this fast calcul do
 - [X] Print & Assemble leg.     
 - [X] Make a simple wood testing workbench.      
 - [ ] Test leg & Correct the latest mistakes.       
-- [ ] Write the assembly manual.        
+- [ ] Make the assembly manual (probably in yt videos).        
 - [ ] Develop sofware to move the leg.      
