@@ -1,5 +1,8 @@
 # Quadruped Robot (Only front right leg)
-![Full Leg](./images/leg.png)
+<p align="middle">
+<img src="./images/leg.png" alt="Full 3D Leg" width="300"/>
+<img src="./images/leg_assembled.jpg" alt="Leg Assembled" width="400"/>
+</p>
 
 ## 🚨 Disclaimer
 Please note: I have just started to learn how to use Blender. The 3D drawings are not yet completed! Any informative comment, or participation in the project is welcome ;)
@@ -46,11 +49,13 @@ So for around 630 € you can fully do this leg. If you want to do others, be aw
 For 4 legs, I think it could cost 550 euros per leg. However this fast calcul does not include the price of the tools, the battery (for autonomous robot), and the raspberry pi (for example).
 
 # TO DO LIST :
-- [x] Import the Opentorque remaked project in my 3D plan.
-- [x] Design the leg in 3D.
-- [x] Make it printable with 3D printer.
-- [X] Print all
-- [ ] Assemble it. (Aslmost done)   
-- [ ] Correct the latest mistakes.
-- [ ] Write the assembly manual.
-- [ ] Develop sofware to move the leg.
+- [x] Import the Opentorque remaked project in my 3D plan.      
+- [x] Design the leg in 3D.     
+- [x] Make it printable with 3D printer.        
+- [X] Print & Assemble motors.      
+- [X] Test motors.      
+- [X] Print & Assemble leg.     
+- [X] Make a test support.      
+- [ ] Test leg & Correct the latest mistakes.       
+- [ ] Write the assembly manual.        
+- [ ] Develop sofware to move the leg.      
