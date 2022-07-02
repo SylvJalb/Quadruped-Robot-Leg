@@ -23,6 +23,7 @@ def setup_odrive(axis):
     axis.encoder.config.cpr = CPR
     axis.motor.config.pole_pairs = POLE_PAIRS
     axis.motor.config.current_lim = CURRENT_LIM
+    axis.motor.config.calibration_current = CURRENT_LIM
     axis.motor.config.torque_constant = TORQUE_CONSTANT
     axis.config.startup_motor_calibration = False
     axis.config.startup_encoder_index_search = False
