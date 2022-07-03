@@ -21,7 +21,7 @@ Use PLA Generic default settings in Cura, and change :
 | foot_holder_part1 | 0.4 | 0.2 | 50% | 35° | No | 23g |
 | foot_holder_part2 | 0.4 | 0.2 | 50% | 35° | No | 22g |
 | forearm_holder | 0.4 | 0.2 | 50% | 35° | No | 100g |
-| forearm_gear_arm | 0.4 | 0.16 | 60% | No | No | 51g |
+| forearm_gear_arm | 0.4 | 0.16 | 60% | No | No | 50g |
 | forearm_gear_knee | 0.4 | 0.16 | 30% | No | No | 28g |
 | forearm_separators (1&2) | 0.4 | 0.32 | 100% | No | No | 3g |
 | shoulder_case | 0.8 | 0.32 | 50% | 51° | Yes | 564g |
