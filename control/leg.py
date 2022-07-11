@@ -1,3 +1,4 @@
+from math import sqrt, acos, atan2, sin, cos
 from params import *
 
 class Position:
@@ -30,8 +31,26 @@ class Leg:
     def calcul_arm_position(self):
         """
         Calculates the Arm position from the foot position
+        Link : https://stackoverflow.com/a/49987361
         """
-        # TODO
+        # Parameters for the calculations
+        (Px, Py) = (self.foot_pos.x, self.foot_pos.z) # Rotate axes just to simplify calculations
+        (Cx, Cy) = (self.shoulder_pos.x, self.shoulder_pos.z)
+        a = SHOULDER_LENGTH # radius of the circle
+
+        b = sqrt((Px - Cx)**2 + (Py - Cy)**2)  # hypot() also works here
+        th = acos(a / b)  # angle theta
+        d = atan2(Py - Cy, Px - Cx)  # direction angle of point P from C
+        d1 = d + th  # direction angle of point T1 from C
+        d2 = d - th  # direction angle of point T2 from C
+
+        T1x = Cx + a * cos(d1)
+        T1y = Cy + a * sin(d1)
+        T2x = Cx + a * cos(d2)
+        T2y = Cy + a * sin(d2)
+        
+        self.arm_pos = Position(T1x, 0, T1y) # Virtual rotation of axes to fit the result with general coordinates
+        
         return self.arm_pos
     
     def calcul_forearm_position(self):
