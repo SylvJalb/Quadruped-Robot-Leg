@@ -1,21 +1,9 @@
-import numpy as np
 from math import sqrt, acos, atan2, sin, cos
-from scipy.spatial.transform import Rotation
+
 
 from numpy import arccos
 from params import *
-
-class Position:
-    """
-    Position of the leg
-    """
-    def __init__(self, x, y, z):
-        self.x = x
-        self.y = y
-        self.z = z
-
-    def __str__(self):
-        return "x={}, y={}, z={}".format(self.x, self.y, self.z)
+from geometry import *
 
 # Leg class
 class Leg:
@@ -28,7 +16,12 @@ class Leg:
         self.shoulder_pos = Position(0, 0, 0)
         self.arm_pos = self.calcul_arm_position()
         self.shoulder_angle = self.calcul_shoulder_angle()
-        self.forearm_pos = self.calcul_forearm_position()
+        
+        # To simplify the next calculations we simulate a rotation of shoulder to have the arm verticaly.
+        self.arm_vertical_pos = rotate_around(self.arm_pos, -self.shoulder_angle, [0, 1, 0])
+        self.foot_vertical_pos = rotate_around(self.foot_pos, -self.shoulder_angle, [0, 1, 0])
+
+        self.forearm_pos, self.forearm_vertical_pos = self.calcul_forearm_position()
         self.arm_angle = self.calcul_arm_angle()
         self.forearm_angle = self.calcul_forearm_angle()
     
@@ -77,8 +70,7 @@ class Leg:
         APF points : A->Arm, P->Foot, F->Forearm
         Work in 3D space (x, y, z)
         How it's working :
-             1) To simplify the calculations we simulate a rotation of shoulder to have the arm verticaly.
-                And, covert to 2D the y and z coordinates of the arm -> (temporarily renamed 'x' and 'y')
+             1) Covert to 2D the y and z coordinates of the vertical arm -> (temporarily renamed 'x' and 'y')
              2) We calculate intersections between the circle around A and around P.
              3) Get the intersection have the lowest x value.
              4) Reconvert the intersection result to the 3D space. And reverse rotation.
@@ -86,42 +78,14 @@ class Leg:
         # Parameters for the calculations
         P = Position(self.foot_pos.x, self.foot_pos.y, self.foot_pos.z)
         A = Position(self.arm_pos.x, self.arm_pos.y, self.arm_pos.z)
+        PC = self.foot_vertical_pos
+        AC = self.arm_vertical_pos
         PR = FOREARM_LENGTH # radius of the Foot circle
         AR = ARM_LENGTH # radius of the Arm circle
 
-        # 1) To simplify the calculations we simulate a rotation of shoulder to have the arm verticaly.
-        def rotate_around_y(pos, angle):
-            """
-            Rotate a vector around the y axis by a given angle
-            Link used : https://www.adamsmith.haus/python/answers/how-to-rotate-a-3d-vector-about-an-axis-in-python
-            """
-            vec = [pos.x, pos.y, pos.z]
-
-            rotation_degrees = angle
-            rotation_radians = np.radians(rotation_degrees)
-            rotation_axis = np.array([0, 1, 0]) # We rotate around the y axis
-
-            rotation_vector = rotation_radians * rotation_axis
-            # Use a scipy function to rotate the vector
-            rotation = Rotation.from_rotvec(rotation_vector)
-            rotated_vec = rotation.apply(vec)
-            pos_result = Position(rotated_vec[0], rotated_vec[1], rotated_vec[2])
-            # print("######")
-            # print(pos)
-            # print(pos_result)
-            # print("######")
-            return pos_result
-        
-        # Do the rotation
-        AC = rotate_around_y(A, -self.shoulder_angle)
-        PC = rotate_around_y(P, -self.shoulder_angle)
-        # Convert to 2D
+        # 1) Convert to "2D"
         PC_2D = Position(PC.y, PC.z, 0)
         AC_2D = Position(AC.y, AC.z, 0)
-
-        # check if the conversion is correct
-        print("AC_2D is normaly (0,0,0) :")
-        print("\tcheck -> {coord}".format(coord = str(AC_2D)))
 
         # 2) We calculate intersections between the circle around A and around P.
         delta=sqrt((AC_2D.x-PC_2D.x)**2 + (AC_2D.y-PC_2D.y)**2)
@@ -151,9 +115,9 @@ class Leg:
         # 4) Reconvert the intersection result to the 3D space.
         FC = Position(SHOULDER_LENGTH, FC_2D.x, FC_2D.y) # add SHOULDER_LENGTH deep to the x axis
         # Reverse the rotation
-        F = rotate_around_y(FC, self.shoulder_angle)
+        F = rotate_around(FC, self.shoulder_angle, [0, 1, 0])
 
-        return F
+        return F, FC
     
     def calcul_arm_angle(self):
         """
