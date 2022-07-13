@@ -27,10 +27,9 @@ fig = fig_leg(my_leg)
 
 
 # Move the foot position and check result
+step = 5
 # while not a 'q' key is pressed
 while True:
-    # update foot position
-    my_leg.set_foot_pos(Position(my_leg.foot_pos.x + 2, -50, my_leg.foot_pos.z + 5))
     # update figure
     update_fig_leg(fig, my_leg)
     # wait for a key press
@@ -39,3 +38,17 @@ while True:
     if keyboard.is_pressed("q"):
         print("End.")
         break
+    elif keyboard.is_pressed("up"):
+        foot_pos.z += step
+    elif keyboard.is_pressed("down"):
+        foot_pos.z -= step
+    elif keyboard.is_pressed("8"):
+        foot_pos.y += step
+    elif keyboard.is_pressed("2"):
+        foot_pos.y -= step
+    elif keyboard.is_pressed("4"):
+        foot_pos.x -= step
+    elif keyboard.is_pressed("6"):
+        foot_pos.x += step
+    # update foot position
+    my_leg.set_foot_pos(foot_pos)
