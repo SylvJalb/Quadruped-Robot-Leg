@@ -30,8 +30,4 @@ def rotate_around(pos, angle, axis_array):
     rotation = Rotation.from_rotvec(rotation_vector)
     rotated_vec = rotation.apply(vec)
     pos_result = Position(rotated_vec[0], rotated_vec[1], rotated_vec[2])
-    # print("###### ROTATE AROUND ######")
-    # print("pos: {}".format(pos))
-    # print("pos_result: {}".format(pos_result))
-    # print("###########################")
     return pos_result

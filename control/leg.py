@@ -1,4 +1,4 @@
-from math import sqrt, acos, atan2, sin, cos
+from math import degrees, sqrt, acos, atan2, sin, cos
 
 
 from numpy import arccos
@@ -13,13 +13,19 @@ class Leg:
         footPos : position of foot
         """
         self.foot_pos = foot_position
+        self.update_leg_positions()
+    
+    def update_leg_positions(self):
+        """
+        Update all leg positions
+        """
         self.shoulder_pos = Position(0, 0, 0)
         self.arm_pos = self.calcul_arm_position()
         self.shoulder_angle = self.calcul_shoulder_angle()
         
         # To simplify the next calculations we simulate a rotation of shoulder to have the arm verticaly.
-        self.arm_vertical_pos = rotate_around(self.arm_pos, -self.shoulder_angle, [0, 1, 0])
-        self.foot_vertical_pos = rotate_around(self.foot_pos, -self.shoulder_angle, [0, 1, 0])
+        self.arm_vertical_pos = rotate_around(self.arm_pos, self.shoulder_angle, [0, 1, 0])
+        self.foot_vertical_pos = rotate_around(self.foot_pos, self.shoulder_angle, [0, 1, 0])
 
         self.forearm_pos, self.forearm_vertical_pos = self.calcul_forearm_position()
         self.arm_angle = self.calcul_arm_angle()
@@ -62,7 +68,7 @@ class Leg:
         adj = self.arm_pos.x - self.shoulder_pos.x
         hyp = SHOULDER_LENGTH
         # Calculate the angle : cos(angle) = adj / hyp => angle = acos(adj / hyp)
-        return acos(adj / hyp)
+        return degrees(acos(adj / hyp))
     
     def calcul_forearm_position(self):
         """
@@ -115,23 +121,29 @@ class Leg:
         # 4) Reconvert the intersection result to the 3D space.
         FC = Position(SHOULDER_LENGTH, FC_2D.x, FC_2D.y) # add SHOULDER_LENGTH deep to the x axis
         # Reverse the rotation
-        F = rotate_around(FC, self.shoulder_angle, [0, 1, 0])
+        F = rotate_around(FC, -self.shoulder_angle, [0, 1, 0])
 
         return F, FC
     
     def calcul_arm_angle(self):
         """
         Calculates the Arm angle from the arm position and forearm position
+        Use SOHCAHTOA method
         """
-        # TODO
-        return 0
+        adj = self.arm_vertical_pos.z - self.forearm_vertical_pos.z
+        hyp = FOREARM_LENGTH
+        # Calculate the angle : cos(angle) = adj / hyp => angle = acos(adj / hyp)
+        return degrees(acos(adj / hyp))
     
     def calcul_forearm_angle(self):
         """
         Calculates the Forearm angle from the forearm position
         """
-        # TODO
-        return 0
+        a = [self.arm_vertical_pos.y, self.arm_vertical_pos.z]
+        b = [self.forearm_vertical_pos.y, self.forearm_vertical_pos.z]
+        c = [self.foot_vertical_pos.y, self.foot_vertical_pos.z]
+        ang = degrees(atan2(c[1]-b[1], c[0]-b[0]) - atan2(a[1]-b[1], a[0]-b[0]))
+        return ang
     
     def set_foot_pos(self, foot_position):
         """
@@ -152,11 +164,7 @@ class Leg:
         # Try to do all the calculations
         try:
             # Update all leg properties with the result of the calculations
-            self.arm_pos = self.calcul_arm_position()
-            self.shoulder_angle = self.calcul_shoulder_angle()
-            self.forearm_pos = self.calcul_forearm_position()
-            self.arm_angle = self.calcul_arm_angle()
-            self.forearm_angle = self.calcul_forearm_angle()
+            self.update_leg_positions()
         except:
             # If the calculations failed, restore the previous state
             print("Error while setting foot position")
