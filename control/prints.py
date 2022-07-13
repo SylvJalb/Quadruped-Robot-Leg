@@ -1,8 +1,8 @@
 from leg import *
 import matplotlib.pyplot as plt
 
-def axe_leg(leg):
-    ax = plt.axes(projection='3d')
+def add_axe_leg(fig, leg):
+    ax = fig.add_subplot(111,projection='3d')
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
@@ -30,9 +30,8 @@ def axe_leg(leg):
 
 def fig_leg(leg):
     fig = plt.figure()
-    fig.add_axes(axe_leg(leg))
+    add_axe_leg(fig, leg)
     return fig
 
 def update_fig_leg(fig, leg):
-    fig.clear()
-    fig.add_axes(axe_leg(leg))
+    add_axe_leg(fig, leg)

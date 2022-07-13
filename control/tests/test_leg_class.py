@@ -27,28 +27,53 @@ fig = fig_leg(my_leg)
 
 
 # Move the foot position and check result
-step = 5
+step = 10
+change = False
+# print how to move the foot
+print("To move the foot, use the keyboard: (stay pressed to move)")
+print("----------")
+print("|+Z|+Y|  |")
+print("----------")
+print("|-X|  |+X|")
+print("----------")
+print("|-Z|-Y|  |")
+print("----------")
+print("\t2: -" + str(step) + " in X", end="")
+print("\t8: +" + str(step) + " in X")
+print("\t4: -" + str(step) + " in Y", end="")
+print("\t6: +" + str(step) + " in Y")
+print("\t1: -" + str(step) + " in Z", end="")
+print("\t9: +" + str(step) + " in Z")
+
 # while not a 'q' key is pressed
 while True:
-    # update figure
-    update_fig_leg(fig, my_leg)
-    # wait for a key press
-    plt.pause(0.1)
+    # wait a little bit
+    plt.pause(0.3)
     # if a 'q' key is pressed, stop the loop
     if keyboard.is_pressed("q"):
         print("End.")
-        break
-    elif keyboard.is_pressed("up"):
+        exit()
+    if keyboard.is_pressed("7"):
         foot_pos.z += step
-    elif keyboard.is_pressed("down"):
+        change = True
+    if keyboard.is_pressed("1"):
         foot_pos.z -= step
-    elif keyboard.is_pressed("8"):
+        change = True
+    if keyboard.is_pressed("8"):
         foot_pos.y += step
-    elif keyboard.is_pressed("2"):
+        change = True
+    if keyboard.is_pressed("2"):
         foot_pos.y -= step
-    elif keyboard.is_pressed("4"):
+        change = True
+    if keyboard.is_pressed("4"):
         foot_pos.x -= step
-    elif keyboard.is_pressed("6"):
+        change = True
+    if keyboard.is_pressed("6"):
         foot_pos.x += step
-    # update foot position
-    my_leg.set_foot_pos(foot_pos)
+        change = True
+    if change:
+        # update foot position
+        my_leg.set_foot_pos(foot_pos)
+        # update figure
+        update_fig_leg(fig, my_leg)
+        change = False
