@@ -45,35 +45,71 @@ print("\t6: +" + str(step) + " in Y")
 print("\t1: -" + str(step) + " in Z", end="")
 print("\t9: +" + str(step) + " in Z")
 
+walk = False
+push = True
+foot_pos_init = Position(foot_pos.x, foot_pos.y, foot_pos.z)
+
 # while not a 'q' key is pressed
 while True:
-    # wait a little bit
-    plt.pause(0.3)
     # if a 'q' key is pressed, stop the loop
     if keyboard.is_pressed("q"):
         print("End.")
         exit()
-    if keyboard.is_pressed("7"):
-        foot_pos.z += step
+    if keyboard.is_pressed("w"):
+        walk = walk == False
+        # save the current foot position
+        foot_pos_init.x = foot_pos.x
+        foot_pos_init.y = foot_pos.y
+        foot_pos_init.z = foot_pos.z
+
+    if walk:
+        if push :
+            # push back the foot to go forward
+            foot_pos.y -= step
+            # if the foot is too pushed, stop push it back
+            if foot_pos.y <= foot_pos_init.y - 170:
+                push = False
+            elif foot_pos.y <= foot_pos_init.y - 150:
+                foot_pos.z += step
+        else:
+            # come back the foot in the air, to the initial position
+            foot_pos.y += step
+            if foot_pos.y >= foot_pos_init.y:
+                foot_pos.x = foot_pos_init.x
+                foot_pos.y = foot_pos_init.y
+                foot_pos.z = foot_pos_init.z
+            elif foot_pos.y >= foot_pos_init.y - 30:
+                foot_pos.z -= step * 2
+            elif foot_pos.y <= foot_pos_init.y - 100:
+                foot_pos.z += step
+            # if the foot is at the initial position, push it back
+            if foot_pos.x == foot_pos_init.x and foot_pos.y == foot_pos_init.y and foot_pos.z == foot_pos_init.z:
+                push = True
         change = True
-    if keyboard.is_pressed("1"):
-        foot_pos.z -= step
-        change = True
-    if keyboard.is_pressed("8"):
-        foot_pos.y += step
-        change = True
-    if keyboard.is_pressed("2"):
-        foot_pos.y -= step
-        change = True
-    if keyboard.is_pressed("4"):
-        foot_pos.x -= step
-        change = True
-    if keyboard.is_pressed("6"):
-        foot_pos.x += step
-        change = True
+    else :
+        if keyboard.is_pressed("7"):
+            foot_pos.z += step
+            change = True
+        if keyboard.is_pressed("1"):
+            foot_pos.z -= step
+            change = True
+        if keyboard.is_pressed("8"):
+            foot_pos.y += step
+            change = True
+        if keyboard.is_pressed("2"):
+            foot_pos.y -= step
+            change = True
+        if keyboard.is_pressed("4"):
+            foot_pos.x -= step
+            change = True
+        if keyboard.is_pressed("6"):
+            foot_pos.x += step
+            change = True
     if change:
         # update foot position
         my_leg.set_foot_pos(foot_pos)
         # update figure
         update_fig_leg(fig, my_leg)
         change = False
+    # wait a little bit
+    plt.pause(0.2)
