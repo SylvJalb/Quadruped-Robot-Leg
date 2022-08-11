@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt # install matplotlib with "pip3 install matplotl
 import keyboard # install keyboard with "sudo pip3 install keyboard"
 
 # Init leg object
-foot_pos = Position(130, -50, -350)
+foot_pos = Position(120, 50, -400)
 my_leg = Leg(foot_pos)
 
 
@@ -44,6 +44,7 @@ print("\t4: -" + str(step) + " in Y", end="")
 print("\t6: +" + str(step) + " in Y")
 print("\t1: -" + str(step) + " in Z", end="")
 print("\t9: +" + str(step) + " in Z")
+print("Press '5' to quit")
 
 walk = False
 push = True
@@ -52,9 +53,10 @@ foot_pos_init = Position(foot_pos.x, foot_pos.y, foot_pos.z)
 # while not a 'q' key is pressed
 while True:
     # if a 'q' key is pressed, stop the loop
-    if keyboard.is_pressed("q"):
+    if keyboard.is_pressed("5"):
         print("End.")
-        exit()
+        break
+    # if a 'w' key is pressed, start walking
     if keyboard.is_pressed("w"):
         walk = walk == False
         # save the current foot position
@@ -113,3 +115,5 @@ while True:
         change = False
     # wait a little bit
     plt.pause(0.2)
+
+exit(1)
