@@ -2,13 +2,20 @@ from leg import *
 import matplotlib.pyplot as plt
 
 def add_axe_leg(fig, leg):
-    ax = fig.add_subplot(111,projection='3d')
+    # Check if the figure already has an axe
+    if len(fig.axes) == 0:
+        ax = fig.add_subplot(111, projection='3d')
+    else:
+        ax = fig.axes[0]
+        # reset the axe data
+        ax.clear()
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
     ax.set_xlim3d(X_MIN, X_MAX)
     ax.set_ylim3d(Y_MIN, Y_MAX)
     ax.set_zlim3d(Z_MIN, Z_MAX)
+    # trace the leg lines
     ax.plot([leg.shoulder_pos.x, leg.arm_pos.x, leg.forearm_pos.x, leg.foot_pos.x],
             [leg.shoulder_pos.y, leg.arm_pos.y, leg.forearm_pos.y, leg.foot_pos.y],
             [leg.shoulder_pos.z, leg.arm_pos.z, leg.forearm_pos.z, leg.foot_pos.z],
