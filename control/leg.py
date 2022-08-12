@@ -1,9 +1,13 @@
 from math import degrees, sqrt, acos, atan2, sin, cos
+from time import sleep
 
 
 from numpy import arccos
 from params import *
 from geometry import *
+
+from setup import *
+from env import *
 
 # Leg class
 class Leg:
@@ -13,7 +17,49 @@ class Leg:
         footPos : position of foot
         """
         self.foot_pos = foot_position
+        self.odrives_ready = False
         self.update_leg_positions()
+
+        try:
+            print("Searching for ODrives cards...")
+            self.oDrive1, self.oDrive2 = find_odrives()
+
+            self.shoulder = self.oDrive1.axis0
+            self.arm = self.oDrive2.axis1
+            self.forearm = self.oDrive2.axis0
+            print("ODrives cards found")
+            print("Setup ODrives cards...")
+            setup_odrive(self.shoulder)
+            setup_odrive(self.arm)
+            setup_odrive(self.forearm)
+            print("ODrives cards configured")
+            self.odrives_ready = True
+        except:
+            self.odrives_ready = False
+            print("No ODrives cards found")
+    
+    def calibrate_leg(self):
+        """
+        Calibrate the leg
+        """
+        if self.odrives_ready:
+            print("Calibrating :")
+            print("\tshoulder...", end="")
+            run_calibration(self.shoulder)
+            print("\tarm...", end="")
+            run_calibration(self.arm)
+            print("\tforearm...\n")
+            run_calibration(self.forearm)
+            # wait for the end of the calibration
+            while not self.shoulder.motor.is_calibrated or not self.arm.motor.is_calibrated or not self.forearm.motor.is_calibrated:
+                sleep(0.3)
+            blocked_motor_mode(self.shoulder)
+            blocked_motor_mode(self.arm)
+            blocked_motor_mode(self.forearm)
+            print("Calibration finished")
+        else:
+            print("ODrives not Ready")
+            
     
     def update_leg_positions(self):
         """
@@ -30,6 +76,12 @@ class Leg:
         self.forearm_pos, self.forearm_vertical_pos = self.calcul_forearm_position()
         self.arm_angle = self.calcul_arm_angle()
         self.forearm_angle = self.calcul_forearm_angle()
+
+        if self.odrives_ready:
+            # Update the motors positions
+            self.shoulder.controller.input_pos = self.shoulder_angle / 360 / REDUCTION_COEF
+            self.arm.controller.input_pos = self.arm_angle / 360 / REDUCTION_COEF
+            self.forearm.controller.input_pos = self.forearm_angle / 360 / REDUCTION_COEF
     
     def calcul_arm_position(self):
         """

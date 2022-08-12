@@ -12,6 +12,7 @@ import keyboard # install keyboard with "sudo pip3 install keyboard"
 # Init leg object
 foot_pos = Position(120, 50, -400)
 my_leg = Leg(foot_pos)
+my_leg.calibrate_leg()
 
 
 # Check the lengths of the leg pieces
@@ -29,6 +30,10 @@ fig = fig_leg(my_leg)
 # Move the foot position and check result
 step = 10
 change = False
+walk = False
+push = True
+foot_pos_init = Position(foot_pos.x, foot_pos.y, foot_pos.z)
+
 # print how to move the foot
 print("To move the foot, use the keyboard: (stay pressed to move)")
 print("----------")
@@ -46,11 +51,7 @@ print("\t1: -" + str(step) + " in Z", end="")
 print("\t9: +" + str(step) + " in Z")
 print("Press '5' to quit")
 
-walk = False
-push = True
-foot_pos_init = Position(foot_pos.x, foot_pos.y, foot_pos.z)
-
-# while not a 'q' key is pressed
+# while not a '5' key is pressed
 while True:
     # if a 'q' key is pressed, stop the loop
     if keyboard.is_pressed("5"):

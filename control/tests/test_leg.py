@@ -80,8 +80,8 @@ while True:
     print("shoulder:",pos_shoulder)
     print("arm:",pos_arm)
     print("forearm:",pos_forearm)
-    go_to_position(shoulder, pos_shoulder)
-    go_to_position(arm, pos_arm)
-    go_to_position(forearm, pos_forearm)
+    shoulder.controller.input_pos = pos_shoulder / 360 / REDUCTION_COEF
+    arm.controller.input_pos = pos_arm / 360 / REDUCTION_COEF
+    forearm.controller.input_pos = pos_forearm / 360 / REDUCTION_COEF
 
     

@@ -13,12 +13,15 @@ def find_odrive():
     return odrv
 
 def find_odrives():
-    oDrive1 = odrive.find_any(serial_number=ODRIVE_1_SN)
-    print("Found odrive 1 : ", oDrive1.serial_number)
-    print("\tBus voltage is " + str(oDrive1.vbus_voltage) + "V")
-    oDrive2 = odrive.find_any(serial_number=ODRIVE_2_SN)
-    print("Found odrive 2 : ", oDrive2.serial_number)
-    print("\tBus voltage is " + str(oDrive2.vbus_voltage) + "V")
+    try:
+        oDrive1 = odrive.find_any(serial_number=ODRIVE_1_SN)
+        print("Found odrive 1 : ", oDrive1.serial_number)
+        print("\tBus voltage is " + str(oDrive1.vbus_voltage) + "V")
+        oDrive2 = odrive.find_any(serial_number=ODRIVE_2_SN)
+        print("Found odrive 2 : ", oDrive2.serial_number)
+        print("\tBus voltage is " + str(oDrive2.vbus_voltage) + "V")
+    except Exception as e:
+        raise e
     return oDrive1, oDrive2
 
 def erase_settings(odrv):
