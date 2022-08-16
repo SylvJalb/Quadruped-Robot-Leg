@@ -33,8 +33,6 @@ def add_axe_leg(fig, leg):
     ax.plot([leg.foot_pos.x], [leg.foot_pos.y], [leg.foot_pos.z], color='blue', marker='o', markersize=15)
     ax.text(leg.foot_pos.x + 15, leg.foot_pos.y + 15, leg.foot_pos.z + 15, str(leg.foot_pos), color='darkblue')
 
-    return ax
-
 def fig_leg(leg):
     fig = plt.figure()
     add_axe_leg(fig, leg)

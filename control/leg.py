@@ -39,7 +39,7 @@ class Leg:
             print("No ODrives cards found")
     
     def __str__(self) -> str:
-        return "Leg :\tshoulder -> " + str(self.shoulder_angle) + "°\tarm -> " + str(self.arm_angle) + "°\tforearm -> " + str(self.forearm_angle) + "°\tfoot -> " + str(self.foot_pos)
+        return "Leg :\tshoulder -> " + str(round(self.shoulder_angle, 1)) + "°\tarm -> " + str(round(self.arm_angle, 1)) + "°\tforearm -> " + str(round(self.forearm_angle, 1)) + "°\tfoot -> " + str(self.foot_pos)
     
     def calibrate_leg(self):
         """
@@ -95,7 +95,7 @@ class Leg:
             # Update the motors positions
             self.shoulder.controller.input_pos = self.shoulder_angle / 360 / REDUCTION_COEF
             self.arm.controller.input_pos = self.arm_angle / 360 / REDUCTION_COEF
-            self.forearm.controller.input_pos = self.forearm_angle / 360 / REDUCTION_COEF
+            self.forearm.controller.input_pos = (self.forearm_angle + 180) / 360 / REDUCTION_COEF
     
     def calcul_arm_position(self):
         """
@@ -196,10 +196,10 @@ class Leg:
         Calculates the Arm angle from the arm position and forearm position
         Use SOHCAHTOA method
         """
-        adj = self.arm_vertical_pos.z - self.forearm_vertical_pos.z
-        hyp = FOREARM_LENGTH
-        # Calculate the angle : cos(angle) = adj / hyp => angle = acos(adj / hyp)
-        return degrees(acos(adj / hyp))
+        a = [0, -100]
+        b = [self.arm_vertical_pos.y, self.arm_vertical_pos.z]
+        c = [self.forearm_vertical_pos.y, self.forearm_vertical_pos.z]
+        return -degrees(atan2(c[1]-b[1], c[0]-b[0]) - atan2(a[1]-b[1], a[0]-b[0]))
     
     def calcul_forearm_angle(self):
         """
@@ -208,8 +208,7 @@ class Leg:
         a = [self.arm_vertical_pos.y, self.arm_vertical_pos.z]
         b = [self.forearm_vertical_pos.y, self.forearm_vertical_pos.z]
         c = [self.foot_vertical_pos.y, self.foot_vertical_pos.z]
-        ang = degrees(atan2(c[1]-b[1], c[0]-b[0]) - atan2(a[1]-b[1], a[0]-b[0]))
-        return ang
+        return degrees(atan2(c[1]-b[1], c[0]-b[0]) - atan2(a[1]-b[1], a[0]-b[0]))
     
     def set_foot_pos(self, foot_position):
         """
