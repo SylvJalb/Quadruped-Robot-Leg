@@ -38,21 +38,35 @@ class Leg:
             self.odrives_ready = False
             print("No ODrives cards found")
     
+    def __str__(self) -> str:
+        return "Leg :\tshoulder -> " + str(self.shoulder_angle) + "°\tarm -> " + str(self.arm_angle) + "°\tforearm -> " + str(self.forearm_angle) + "°\tfoot -> " + str(self.foot_pos)
+    
     def calibrate_leg(self):
         """
         Calibrate the leg
         """
         if self.odrives_ready:
             print("Calibrating :")
-            print("\tshoulder...", end="")
+            print("\tshoulder...  ")
+            print("\t\tstatus : ", self.shoulder.motor.is_calibrated)
             run_calibration(self.shoulder)
-            print("\tarm...", end="")
+            sleep(15) # wait for the end of the calibration
+            print("\t\tstatus : ", self.shoulder.motor.is_calibrated)
+            print("\tarm...  ")
+            print("\t\tstatus : ", self.arm.motor.is_calibrated)
             run_calibration(self.arm)
-            print("\tforearm...\n")
+            sleep(15) # wait for the end of the calibration
+            print("\t\tstatus : ", self.arm.motor.is_calibrated)
+            print("\tforearm...")
+            print("\t\tstatus : ", self.forearm.motor.is_calibrated)
             run_calibration(self.forearm)
-            # wait for the end of the calibration
-            while not self.shoulder.motor.is_calibrated or not self.arm.motor.is_calibrated or not self.forearm.motor.is_calibrated:
-                sleep(0.3)
+            sleep(15) # wait for the end of the calibration
+            print("\t\tstatus : ", self.forearm.motor.is_calibrated)
+            print("Put the leg to the home position... (init in 10 seconds)")
+            sleep(10)
+            self.shoulder.encoder.set_linear_count(self.shoulder_angle / 360 / REDUCTION_COEF)
+            self.arm.encoder.set_linear_count(self.arm_angle / 360 / REDUCTION_COEF)
+            self.forearm.encoder.set_linear_count(self.forearm_angle / 360 / REDUCTION_COEF)
             blocked_motor_mode(self.shoulder)
             blocked_motor_mode(self.arm)
             blocked_motor_mode(self.forearm)

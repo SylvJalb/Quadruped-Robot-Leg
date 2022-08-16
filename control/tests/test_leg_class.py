@@ -30,7 +30,7 @@ fig = fig_leg(my_leg)
 # Move the foot position and check result
 step = 10
 change = False
-walk = False
+walk = True
 push = True
 foot_pos_init = Position(foot_pos.x, foot_pos.y, foot_pos.z)
 
@@ -113,6 +113,7 @@ while True:
         my_leg.set_foot_pos(foot_pos)
         # update figure
         update_fig_leg(fig, my_leg)
+        print(my_leg)
         change = False
     # wait a little bit
     plt.pause(0.2)
