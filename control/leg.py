@@ -62,11 +62,11 @@ class Leg:
             run_calibration(self.forearm)
             sleep(15) # wait for the end of the calibration
             print("\t\tstatus : ", self.forearm.motor.is_calibrated)
-            print("Put the leg to the home position... (init in 10 seconds)")
-            sleep(10)
-            self.shoulder.encoder.set_linear_count(self.shoulder_angle / 360 / REDUCTION_COEF)
-            self.arm.encoder.set_linear_count(self.arm_angle / 360 / REDUCTION_COEF)
-            self.forearm.encoder.set_linear_count(self.forearm_angle / 360 / REDUCTION_COEF)
+            # print("Put the leg to the home position... (init in 10 seconds)")
+            # sleep(10)
+            # self.shoulder.encoder.set_linear_count(self.shoulder_angle / 360 / REDUCTION_COEF)
+            # self.arm.encoder.set_linear_count(self.arm_angle / 360 / REDUCTION_COEF)
+            # self.forearm.encoder.set_linear_count(self.forearm_angle / 360 / REDUCTION_COEF)
             blocked_motor_mode(self.shoulder)
             blocked_motor_mode(self.arm)
             blocked_motor_mode(self.forearm)
@@ -95,7 +95,7 @@ class Leg:
             # Update the motors positions
             self.shoulder.controller.input_pos = self.shoulder_angle / 360 / REDUCTION_COEF
             self.arm.controller.input_pos = self.arm_angle / 360 / REDUCTION_COEF
-            self.forearm.controller.input_pos = (self.forearm_angle + 180) / 360 / REDUCTION_COEF
+            self.forearm.controller.input_pos = self.forearm_angle / 360 / REDUCTION_COEF
     
     def calcul_arm_position(self):
         """
