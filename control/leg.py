@@ -19,24 +19,27 @@ class Leg:
         self.foot_pos = foot_position
         self.odrives_ready = False
         self.update_leg_positions()
+        if MODE == "motor":
+            try:
+                print("Searching for ODrives cards...")
+                self.oDrive1, self.oDrive2 = find_odrives()
 
-        try:
-            print("Searching for ODrives cards...")
-            self.oDrive1, self.oDrive2 = find_odrives()
-
-            self.shoulder = self.oDrive1.axis0
-            self.arm = self.oDrive2.axis1
-            self.forearm = self.oDrive2.axis0
-            print("ODrives cards found")
-            print("Setup ODrives cards...")
-            setup_odrive(self.shoulder)
-            setup_odrive(self.arm)
-            setup_odrive(self.forearm)
-            print("ODrives cards configured")
-            self.odrives_ready = True
-        except:
+                self.shoulder = self.oDrive1.axis0
+                self.arm = self.oDrive2.axis1
+                self.forearm = self.oDrive2.axis0
+                print("ODrives cards found")
+                print("Setup ODrives cards...")
+                setup_odrive(self.shoulder)
+                setup_odrive(self.arm)
+                setup_odrive(self.forearm)
+                print("ODrives cards configured")
+                self.odrives_ready = True
+            except:
+                self.odrives_ready = False
+                print("No ODrives cards found")
+        else:
+            print("Simulation mode")
             self.odrives_ready = False
-            print("No ODrives cards found")
     
     def __str__(self) -> str:
         return "Leg :\tshoulder -> " + str(round(self.shoulder_angle, 1)) + "°\tarm -> " + str(round(self.arm_angle, 1)) + "°\tforearm -> " + str(round(self.forearm_angle, 1)) + "°\tfoot -> " + str(self.foot_pos)

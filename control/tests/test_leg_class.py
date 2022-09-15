@@ -1,4 +1,3 @@
-import select
 import sys
 sys.path.append('../')
 from params import *
@@ -7,6 +6,7 @@ from leg import Leg, Position
 from prints import fig_leg, update_fig_leg
 from math import sqrt
 from time import sleep
+from env import *
 import matplotlib.pyplot as plt
 import keyboard
 
@@ -25,17 +25,19 @@ print(get_dist(my_leg.forearm_pos, my_leg.foot_pos))
 
 
 # Show the figure
-plt.ion()
-fig = fig_leg(my_leg)
+if MODE == "simulation":
+    plt.ion()
+    fig = fig_leg(my_leg)
+
 
 
 # Move the foot position and check result
-step = 5
 change = False
 walk = True
 push = True
-foot_pos_init = Position(foot_pos.x, foot_pos.y, foot_pos.z)
 key = ""
+foot_pos_init = Position(foot_pos.x, foot_pos.y, foot_pos.z)
+step = 5
 
 # print how to move the foot
 print("To move the foot, use the keyboard: (press enter to move)")
@@ -114,15 +116,13 @@ while True:
     if change:
         # update foot position
         my_leg.set_foot_pos(foot_pos)
-        # update the figure
-        update_fig_leg(fig, my_leg)
-        fig.canvas.draw()
-        fig.canvas.flush_events()
+        if MODE == "simulation":
+            # update the figure
+            update_fig_leg(fig, my_leg)
+            fig.canvas.draw()
+            fig.canvas.flush_events()
         print(my_leg)
         change = False
         # wait a little bit
         sleep(0.1)
-    else:
-        # wait a little bit
-        plt.pause(0.1)
 exit(1)

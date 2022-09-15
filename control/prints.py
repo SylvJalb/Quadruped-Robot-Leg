@@ -1,14 +1,7 @@
 from leg import *
 import matplotlib.pyplot as plt
 
-def add_axe_leg(fig, leg):
-    # Check if the figure already has an axe
-    if len(fig.axes) == 0:
-        ax = fig.add_subplot(111, projection='3d')
-    else:
-        ax = fig.axes[0]
-        # reset the axe data
-        ax.clear()
+def add_axe_leg(ax, leg):
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
@@ -35,8 +28,11 @@ def add_axe_leg(fig, leg):
 
 def fig_leg(leg):
     fig = plt.figure()
-    add_axe_leg(fig, leg)
+    ax = fig.add_subplot(111, projection='3d')
+    add_axe_leg(ax, leg)
     return fig
 
 def update_fig_leg(fig, leg):
-    add_axe_leg(fig, leg)
+    ax = fig.axes[0]
+    ax.clear()
+    add_axe_leg(ax, leg)
