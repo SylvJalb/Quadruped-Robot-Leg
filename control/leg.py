@@ -1,5 +1,5 @@
 from math import degrees, sqrt, acos, atan2, sin, cos
-from time import sleep
+from time import sleep, time
 
 
 from numpy import arccos
@@ -48,34 +48,81 @@ class Leg:
         """
         Calibrate the leg
         """
+        success = True
         if self.odrives_ready:
             print("Calibrating :")
             print("\tshoulder...  ")
+            # try 3 times to calibrate the shoulder
+            attempt = 1
+            while not self.shoulder.motor.is_calibrated:
+                print("\t\tstatus : ", self.shoulder.motor.is_calibrated)
+                if attempt > 3:
+                    success = False
+                    print("Calibration failed on shoulder")
+                    break
+                run_calibration(self.shoulder)
+                attempt += 1
+                sleep(10)
+            # wait 5 sec before starting the next calibration
+            sleep(5)
             print("\t\tstatus : ", self.shoulder.motor.is_calibrated)
-            run_calibration(self.shoulder)
-            sleep(15) # wait for the end of the calibration
-            print("\t\tstatus : ", self.shoulder.motor.is_calibrated)
-            print("\tarm...  ")
-            print("\t\tstatus : ", self.arm.motor.is_calibrated)
-            run_calibration(self.arm)
-            sleep(15) # wait for the end of the calibration
-            print("\t\tstatus : ", self.arm.motor.is_calibrated)
-            print("\tforearm...")
-            print("\t\tstatus : ", self.forearm.motor.is_calibrated)
-            run_calibration(self.forearm)
-            sleep(15) # wait for the end of the calibration
-            print("\t\tstatus : ", self.forearm.motor.is_calibrated)
+
+            if success:
+                print("\tarm...  ")
+                # try 3 times to calibrate the arm
+                attempt = 1
+                while not self.arm.motor.is_calibrated:
+                    print("\t\tstatus : ", self.arm.motor.is_calibrated)
+                    if attempt > 3:
+                        success = False
+                        print("Calibration failed on arm")
+                        break
+                    run_calibration(self.arm)
+                    attempt += 1
+                    sleep(10)
+                # wait 5 sec before starting the next calibration
+                sleep(5)
+                print("\t\tstatus : ", self.arm.motor.is_calibrated)
+
+                if success:
+                    print("\tforearm...")
+                    # try 3 times to calibrate the forearm
+                    attempt = 1
+                    while not self.forearm.motor.is_calibrated:
+                        print("\t\tstatus : ", self.forearm.motor.is_calibrated)
+                        if attempt > 3:
+                            success = False
+                            print("Calibration failed on forearm")
+                            break
+                        run_calibration(self.forearm)
+                        attempt += 1
+                        sleep(10)
+                    # wait 5 sec before starting the next calibration
+                    sleep(5)
+                    if success:
+                        print("\t\tstatus : ", self.forearm.motor.is_calibrated)
+                        print("Calibration done")
             # print("Put the leg to the home position... (init in 10 seconds)")
             # sleep(10)
             # self.shoulder.encoder.set_linear_count(self.shoulder_angle / 360 / REDUCTION_COEF)
             # self.arm.encoder.set_linear_count(self.arm_angle / 360 / REDUCTION_COEF)
             # self.forearm.encoder.set_linear_count(self.forearm_angle / 360 / REDUCTION_COEF)
-            blocked_motor_mode(self.shoulder)
-            blocked_motor_mode(self.arm)
-            blocked_motor_mode(self.forearm)
-            print("Calibration finished")
+            if success:
+                # block the motors
+                blocked_motor_mode(self.shoulder)
+                blocked_motor_mode(self.arm)
+                blocked_motor_mode(self.forearm)
+                print("Motors blocked")
+            else:
+                # print motor errors :
+                print("\tShoulder motor error : ", self.shoulder.motor.error)
+                print("\tArm motor error : ", self.arm.motor.error)
+                print("\tForearm motor error : ", self.forearm.motor.error)
         else:
             print("ODrives not Ready")
+            success = False
+        
+        return success
             
     
     def update_leg_positions(self):
@@ -211,7 +258,7 @@ class Leg:
         a = [self.arm_vertical_pos.y, self.arm_vertical_pos.z]
         b = [self.forearm_vertical_pos.y, self.forearm_vertical_pos.z]
         c = [self.foot_vertical_pos.y, self.foot_vertical_pos.z]
-        return degrees(atan2(c[1]-b[1], c[0]-b[0]) - atan2(a[1]-b[1], a[0]-b[0]))
+        return -180.0 - degrees(atan2(c[1]-b[1], c[0]-b[0]) - atan2(a[1]-b[1], a[0]-b[0]))
     
     def set_foot_pos(self, foot_position):
         """

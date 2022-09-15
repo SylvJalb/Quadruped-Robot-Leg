@@ -11,9 +11,10 @@ import matplotlib.pyplot as plt
 import keyboard
 
 # Init leg object
-foot_pos = Position(120, 50, -400)
+foot_pos = Position(120, 50, -450)
 my_leg = Leg(foot_pos)
-my_leg.calibrate_leg()
+if not my_leg.calibrate_leg():
+    exit(1)
 
 
 # Check the lengths of the leg pieces
@@ -75,9 +76,9 @@ while True:
             # push back the foot to go forward
             foot_pos.y -= step
             # if the foot is too pushed, stop push it back
-            if foot_pos.y <= foot_pos_init.y - 170:
+            if foot_pos.y <= foot_pos_init.y - 200:
                 push = False
-            elif foot_pos.y <= foot_pos_init.y - 150:
+            elif foot_pos.y <= foot_pos_init.y - 190:
                 foot_pos.z += step
         else:
             # come back the foot in the air, to the initial position
@@ -124,5 +125,4 @@ while True:
         print(my_leg)
         change = False
         # wait a little bit
-        sleep(0.1)
-exit(1)
+        sleep(0.05)
