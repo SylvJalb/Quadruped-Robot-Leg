@@ -184,7 +184,7 @@ class Leg:
         adj = self.arm_pos.x - self.shoulder_pos.x
         hyp = SHOULDER_LENGTH
         # Calculate the angle : cos(angle) = adj / hyp => angle = acos(adj / hyp)
-        return degrees(acos(adj / hyp))
+        return -degrees(acos(adj / hyp))
     
     def calcul_forearm_position(self):
         """

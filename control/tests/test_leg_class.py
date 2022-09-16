@@ -11,9 +11,9 @@ import matplotlib.pyplot as plt
 import keyboard
 
 # Init leg object
-foot_pos = Position(120, 50, -450)
+foot_pos = Position(120, 50, -425)
 my_leg = Leg(foot_pos)
-if not my_leg.calibrate_leg():
+if MODE == "motor" and not my_leg.calibrate_leg():
     exit(1)
 
 
