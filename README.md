@@ -1,7 +1,7 @@
 # Quadruped Robot (Only front right leg)
 <p align="middle">
-<img src="./images/leg.png" alt="Full 3D Leg" width="300"/>
-<img src="./images/leg_assembled.jpg" alt="Leg Assembled" width="400"/>
+<img src="./images/leg.png" alt="Full 3D Leg" height="400"/>
+<img src="./images/leg_test.gif" alt="Leg Test" height="400"/>
 </p>
 
 ## 🚨 Disclaimer
@@ -59,4 +59,4 @@ For 4 legs, I think it could cost 550 euros per leg. However this fast calcul do
 - [X] Make a simple wood testing workbench.      
 - [X] Test leg & Correct the latest mistakes.       
 - [ ] Make the assembly manual (probably in yt videos).        
-- [ ] Develop sofware to move the leg. (In progress...)         
+- [X] Develop sofware to move the leg.         
