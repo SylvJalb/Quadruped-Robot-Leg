@@ -17,8 +17,8 @@ I use more particularly the redesigned OpenTorque Actuator, by the Youtuber [Sky
 Finals Actuators STL Files are in the folder "openTorqueFiles".
 
 # What you will need
-🚨 Warning ! These are the exact components I purchased for my prototype. All prices and links are from January 10, 2022 ... They may not be current anymore ! The prices are therefore only to give you an idea.
-I STILL NOT FINISHED THE PROJECT! So some components may not be correct yet.
+🚨 Warning ! These are the exact components I purchased for my prototype. All prices and links are from January 10, 2022 ... They may not be current anymore ! The prices are therefore only to give you an idea.     
+
 | Piece | Number | Dimensions | Price ~ | Link (Exemple) |
 |-----|:-----:|:-----:|:----:|:----:|
 | Trapezoid toothed belts | 1 | 70c x 2cm | 20€ | [Amazon](https://www.amazon.fr/gp/product/B092PTVXP8/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&th=1) |
