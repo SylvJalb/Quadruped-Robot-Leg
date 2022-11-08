@@ -1,12 +1,11 @@
 use std::fmt::Debug;
 use std::fmt::Formatter;
 use std::fs::File;
-use std::io::{Error, ErrorKind};
+use std::io::{BufReader, Error, ErrorKind};
 use std::f32::consts::PI;
-use nalgebra::Vector3;
+use nalgebra::{Vector3, Rotation3};
 use odrive_rs::enumerations::AxisID;
 
-mod geometry;
 mod setup;
 
 
@@ -38,20 +37,38 @@ impl Leg {
         Initialize the leg
         foot_position : position of foot
         */
-        pub fn new(&self, foot_position: &Vector3<f32>) -> Leg {
-                self.foot_pos = foot_position;
-                self.odrives_ready = false;
+        pub fn new(foot_position: Vector3<f32>) -> Self {
+                let mut new_leg = Leg {
+                        foot_pos: foot_position,
+                        odrives_ready: false,
+                        shoulder: AxisID::Zero,
+                        arm: AxisID::Zero,
+                        forearm: AxisID::Zero,
+                        shoulder_pos: Vector3::zeros(),
+                        arm_pos: Vector3::zeros(),
+                        forearm_pos: Vector3::zeros(),
+                        shoulder_angle: 0.0,
+                        arm_angle: 0.0,
+                        forearm_angle: 0.0,
+                        arm_vertical_pos: Vector3::zeros(),
+                        foot_vertical_pos: Vector3::zeros(),
+                        params: serde_json::Value::Null
+                };
+
+
                 // read params json file located "./params.json"
                 let file = File::open("params.json").expect("file should open read only");
-                self.params = serde_json::from_reader(file).expect("file should be proper JSON");
-                self.update_leg_positions();
-                if self.params.get("MODE") == "motor" {
+                let reader = BufReader::new(file);
+                new_leg.params = serde_json::from_reader(reader).expect("file should be proper JSON");
+                new_leg.update_positions();
+                if new_leg.params.get("MODE").unwrap() == "motor" {
                         // TO DO: find and setup odrives cards
+                        println!("Odrives not yet implemented");
                 } else {
                         println!("Simulation mode");
-                        self.odrives_ready = false;
+                        new_leg.odrives_ready = false;
                 }
-
+                return new_leg;
         }
 
         /*
@@ -129,10 +146,10 @@ impl Leg {
                 let leg_copy = self.clone();
                 
                 // update foot position
-                self.foot_pos = foot_position;
+                self.foot_pos = foot_position.clone();
 
                 // calcul all others positions
-                let err = self.update_leg_positions();
+                let err = self.update_positions();
                 if err.is_err() {
                         self = leg_copy;
                         return Err(Error::new(ErrorKind::Other, "Error while setting foot position. Previous state restored !"));
@@ -151,8 +168,8 @@ impl Leg {
                 self.calcul_shoulder_angle();
 
                 // To simplify the next calculations we simulate a rotation of shoulder to have the arm verticaly.
-                self.arm_vertical_pos = geometry::rotate_around_axis(self.arm_pos, self.shoulder_angle, Vector3::new(0 as u8, 1 as u8, 0 as u8));
-                self.foot_vertical_pos = geometry::rotate_around_axis(self.foot_pos, self.shoulder_angle, Vector3::new(0 as u8, 1 as u8, 0 as u8));
+                self.arm_vertical_pos = Rotation3::from_axis_angle(&Vector3::y_axis(), self.shoulder_angle) * self.arm_pos;
+                self.foot_vertical_pos = Rotation3::from_axis_angle(&Vector3::y_axis(), self.shoulder_angle) * self.foot_pos;
                 
                 self.calcul_forearm_position();
                 self.calcul_arm_angle();
@@ -174,7 +191,7 @@ impl Leg {
         fn calcul_arm_position(&self) -> Result<(), Error> {
                 // (Px, Py) = (self.foot_pos.x, self.foot_pos.z);
                 // (Cx, Cy) = (self.shoulder_pos.x, self.shoulder_pos.z);
-                let a = self.params.get("SHOULDER_LENGTH").as_f32();
+                let a = self.params.get("SHOULDER_LENGTH").unwrap().as_f64();
                 let b = ((self.foot_pos.x - self.shoulder_pos.x).pow(2) + (self.foot_pos.z - self.shoulder_pos.z).pow(2)).sqrt();
                 let th = (a/b).acos(); // angle theta
                 let d = (self.foot_pos.z - self.shoulder_pos.z).atan2(self.foot_pos.x - self.shoulder_pos.x);
@@ -201,7 +218,7 @@ impl Leg {
         */
         fn calcul_shoulder_angle(&self) -> Result<(), Error> {
                 let adj = (self.arm_pos.x - self.shoulder_pos.x);
-                let hyp = self.params.get("SHOULDER_LENGTH").as_f32();
+                let hyp = self.params.get("SHOULDER_LENGTH").unwrap().as_f64();
                 // Calculate the angle : cos(angle) = adj / hyp => angle = acos(adj / hyp)
                 self.shoulder_angle = -((adj/hyp).acos() * 180.0f32 / PI); // * 180.0f32 / PI -> to convert to degrees
                 return Ok(());
@@ -217,10 +234,10 @@ impl Leg {
                 3) Get the intersection have the lowest x value.
                 4) Reconvert the intersection result to the 3D space. And reverse rotation.
         */
-        fn calcul_forearm_position<RT>(&self) -> Result<(), Error> {
+        fn calcul_forearm_position(&self) -> Result<(), Error> {
                 // Parameters for the calculations
-                let p_radius = self.params.get("FOREARM_LENGTH").as_f32();
-                let a_radius = self.params.get("ARM_LENGTH").as_f32();
+                let p_radius = self.params.get("FOREARM_LENGTH").unwrap().as_f64();
+                let a_radius = self.params.get("ARM_LENGTH").unwrap().as_f64();
 
                 // 1) Convert to "2D" space
                 let p_point = Vector3::new(self.foot_vertical_pos.y as f32, self.foot_vertical_pos.z as f32, 0 as f32);
@@ -257,9 +274,9 @@ impl Leg {
                 }
 
                 // 4) Reconvert the intersection result to the 3D space.
-                self.forearm_vertical_pos = Vector3::new(self.params.get("SHOULDER_LENGTH").as_f32(), intersection_point.x, intersection_point.y);
+                self.forearm_vertical_pos = Vector3::new(self.params.get("SHOULDER_LENGTH").unwrap().as_f64() as f32, intersection_point.x, intersection_point.y);
                 // Reverse rotation
-                self.forearm_pos = geometry::rotate_around_axis(intersection_point, -(self.shoulder_angle), Vector3::new(0 as u8, 1 as u8, 0 as u8));
+                self.forearm_pos = Rotation3::from_axis_angle(&Vector3::y_axis(), -(self.shoulder_angle)) * self.forearm_vertical_pos;
 
                 return Ok(());
         }
