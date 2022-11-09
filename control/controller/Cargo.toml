@@ -1,11 +1,20 @@
 [package]
-name = "controller"
+name = "leg_controller"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+# The name of the native library. This is the name which will be used in Python to import the
+# library (i.e. `import string_sum`). If you change this, you must also change the name of the
+# `#[pymodule]` in `src/lib.rs`.
+name = "leg_controller"
+path = "src/leg_py_lib.rs"
+
+# "cdylib" is necessary to produce a shared library for Python to import from.
+crate-type = ["cdylib"]
 
 [dependencies]
 odrive-rs = "1.1.0"
 serde_json = "1.0.48"
 nalgebra = "0.31.3"
+pyo3 = { version = "0.17.3", features = ["extension-module"] }

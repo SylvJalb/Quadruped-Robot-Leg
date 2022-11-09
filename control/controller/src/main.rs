@@ -1,5 +1,5 @@
 use nalgebra::Vector3;
-#[path = "./services/leg.rs"] pub mod leg;
+pub mod leg;
 
 fn main() {
     // create a new Leg instance

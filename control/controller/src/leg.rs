@@ -6,7 +6,7 @@ use std::f32::consts::PI;
 use nalgebra::{Vector3, Rotation3};
 use odrive_rs::enumerations::AxisID;
 
-mod setup;
+//mod setup;
 
 
 pub struct Leg {
