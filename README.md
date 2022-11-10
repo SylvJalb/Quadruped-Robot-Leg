@@ -59,4 +59,6 @@ For 4 legs, I think it could cost 550 euros per leg. However this fast calcul do
 - [X] Make a simple wood testing workbench.      
 - [X] Test leg & Correct the latest mistakes.       
 - [ ] Make the assembly manual (probably in yt videos).        
-- [X] Develop sofware to move the leg.         
+- [X] Develop sofware to move the leg (in Python)         
+- [X] Redevelop the software to move the leg (in Rust) to have better calcul performance.       
+- [X] Make a Python library from the Rust code. (to use it in developement/simulation environment)
