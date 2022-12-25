@@ -6,9 +6,6 @@ use std::f32::consts::PI;
 use nalgebra::{Vector3, Rotation3};
 use odrive_rs::enumerations::AxisID;
 
-//mod setup;
-
-
 pub struct Leg {
         foot_pos: Vector3<f32>,
         odrives_ready: bool,
@@ -341,5 +338,30 @@ impl Leg {
                 let c = vec![self.foot_vertical_pos.y, self.foot_vertical_pos.z];
                 self.forearm_angle = -180.0 - (((c[1] - b[1]).atan2(c[0] - b[0]) - (a[1] - b[1]).atan2(a[0] - b[0]))) * 180.0f32 / PI; // * 180.0f32 / PI is to convert radian to degrees
                 return Ok(());
+        }
+
+        // Positions Getters
+        pub fn get_foot_position(&self) -> Vector3<f32> {
+                return self.foot_pos;
+        }
+        pub fn get_arm_position(&self) -> Vector3<f32> {
+                return self.arm_pos;
+        }
+        pub fn get_forearm_position(&self) -> Vector3<f32> {
+                return self.forearm_pos;
+        }
+        pub fn get_shoulder_position(&self) -> Vector3<f32> {
+                return self.shoulder_pos;
+        }
+
+        // Angles Getters
+        pub fn get_arm_angle(&self) -> f32 {
+                return self.arm_angle;
+        }
+        pub fn get_forearm_angle(&self) -> f32 {
+                return self.forearm_angle;
+        }
+        pub fn get_shoulder_angle(&self) -> f32 {
+                return self.shoulder_angle;
         }
 }
