@@ -1,3 +1,4 @@
+import sys
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import LineSegs, CardMaker, PointLight, loadPrcFile, BoundingSphere, NodePath
 
@@ -12,72 +13,93 @@ class SimulationApp(ShowBase):
         # Initialize the ShowBase class
         ShowBase.__init__(self)
 
-        self.foot_pos = [120.0, 50.0, -425.0]
+        self.foot_pos = [120.0, 30.0, -425.0]
 
         # create a new Leg instance
         self.leg = leg_controller.LegPy(self.foot_pos)
         print(self.leg.to_string())
+
+        # set the background color
+        self.setBackgroundColor(1.0, 1.0, 1.0, 1.0)
         
         # Create a point light to illuminate the scene
         plight = PointLight('plight')
         plight.setColor((1.0, 1.0, 1.0, 1.0))
         plnp = self.render.attach_new_node(plight)
-        plnp.set_pos(50.0, 250.0, 250.0)
+        plnp.set_pos(400.0, 50.0, 300.0)
         self.render.set_light(plnp)
 
-        self.draw_leg()
+        # Load models.
+        self.struct_obj = self.loader.load_model("models/struct.obj")
+        self.shoulder_obj = self.loader.load_model("models/shoulder.obj")
+        self.arm_obj = self.loader.load_model("models/arm.obj")
+        self.forearm_obj = self.loader.load_model("models/forearm.obj")
+        # Set diff vectors
+        # rotate the model so it faces the right direction
+        self.struct_obj.set_hpr(0.0, 90.0, 90.0)
+        # replace origin with the center of the model
+        self.struct_obj.set_pos(0.0, -200.0, -500.0)
+        # Reparent the model to render.
+        self.struct_obj.reparent_to(self.render)
+        self.shoulder_obj.reparent_to(self.render)
+        self.arm_obj.reparent_to(self.render)
+        self.forearm_obj.reparent_to(self.render)
+        self.update_models()
 
+        self.accept('v', self.show_camera)
+        self.accept('v-up', self.unshow_camera)
+        self.accept('escape', sys.exit)
+    
+    def run_walk(self):
+        self.walking_step = -10
         # Create a task to update the simulation
-        self.taskMgr.add(self.update_camera, "UpdateCamera")
-        self.taskMgr.add(self.update_leg_pos, 'update_leg_pos')
+        self.taskMgr.add(self.update_walk, 'UpdateWalk', sort=1)
+        self.run()
+
+    def show_camera(self):
+        self.taskMgr.add(self.update_camera, 'UpdateCamera', sort=1)
+    def unshow_camera(self):
+        self.taskMgr.remove('UpdateCamera')
 
     def update_camera(self, task):
-        
         # Set the camera position and orientation
-        self.camera.setPos(800.0, 100.0, 350.0)
-        self.camera.lookAt(0.0, -10.0, -230.0)
+        self.camera.setPos(1200.0, 500.0, 350.0)
+        self.camera.lookAt(0.0, -10.0, -150.0)
         
         # Return Task.cont to indicate that the task should continue running
         return task.cont
 
-    def update_leg_pos(self, task):
+    def update_walk(self, task):
         # Update the leg
         if self.foot_pos[1] < -100:
-            self.foot_pos[1] = 100
-        else:
-            self.foot_pos[1] -= 10
+            self.walking_step = 10
+        elif self.foot_pos[1] > 100:
+            self.walking_step = -10
+            
+        self.foot_pos[1] += self.walking_step
+        self.foot_pos[2] += self.walking_step / 2
         self.leg.set_foot_position(self.foot_pos)
 
         # Clear the previous lines
-        self.draw_leg()
+        self.update_models()
+        print(self.leg.to_string())
+        print(self.arm_obj.get_hpr())
+
+        time.sleep(0.05)
 
         return task.cont
     
-    def draw_leg(self):
-        print(self.leg.to_string())
-        # Get the positions of the main points of the leg
+    def update_models(self):
+        # Update the models
         shoulder_pos, arm_pos, forearm_pos, foot_pos = self.get_positions_from_leg()
-        # Get the angles of the main points of the leg
-        # shoulder_angle, arm_angle, forearm_angle = self.get_angles_from_leg(leg)
-
-        # Create a LineSegs object to hold the lines representing the bones
-        line_segs = LineSegs()
-        line_segs.set_thickness(10.0)
-        line_segs.set_color(*(1.0, 0.0, 0.0, 1.0)) # red
-
-        # Create a line for each bone
-        line_segs.move_to(shoulder_pos)
-        line_segs.draw_to(arm_pos)
-        line_segs.set_color(*(0.0, 0.0, 1.0, 1.0)) # blue
-        line_segs.move_to(arm_pos)
-        line_segs.draw_to(forearm_pos)
-        line_segs.set_color(*(0.0, 1.0, 0.0, 1.0)) # green
-        line_segs.move_to(forearm_pos)
-        line_segs.draw_to(foot_pos)
-
-        # Create a node to hold the lines and attach it to the render tree
-        line_node = line_segs.create()
-        self.render.attach_new_node(line_node)
+        shoulder_angle, arm_angle, forearm_angle = self.get_angles_from_leg()
+        self.shoulder_obj.set_pos(shoulder_pos)
+        self.shoulder_obj.set_hpr(-90.0, shoulder_angle, 0.0)
+        self.arm_obj.set_pos(arm_pos)
+        self.arm_obj.set_hpr(-90.0, shoulder_angle, -arm_angle)
+        self.forearm_obj.set_pos(forearm_pos)
+        self.forearm_obj.set_hpr(-90.0, shoulder_angle, -(arm_angle + forearm_angle))
+        
     
     # Return the main points positions of the leg
     # in the form of a tuple

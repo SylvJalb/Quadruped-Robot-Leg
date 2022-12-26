@@ -6,4 +6,4 @@ import time
 
 # Create a simulation app
 test1 = SimulationApp()
-test1.run()
+test1.run_walk()

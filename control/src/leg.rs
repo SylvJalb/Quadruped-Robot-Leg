@@ -27,7 +27,7 @@ pub struct Leg {
 
 impl Debug for Leg {
         fn fmt(&self, f: &mut Formatter) -> Result<(), std::fmt::Error> {
-                write!(f, "Leg {{\n\tfoot_pos:\t{:?} \n\tshoulder_angle:\t{:?} \n\tarm_angle:\t{:?} \n\tforearm_angle:\t{:?} \n}}", self.foot_pos, self.shoulder_angle, self.arm_angle, self.forearm_angle)
+                write!(f, "Leg {{\n\tfoot_pos:\t{:?} \n\n\tforearm_pos:\t{:?} \n\tforearm_angle:\t{:?} \n\n\tarm_pos:\t{:?} \n\tarm_angle:\t{:?} \n\n\tshoulder_pos:\t{:?} \n\tshoulder_angle:\t{:?} \n}}", self.foot_pos, self.forearm_pos, self.forearm_angle, self.arm_pos, self.arm_angle, self.shoulder_pos, self.shoulder_angle)
         }
 }
 
