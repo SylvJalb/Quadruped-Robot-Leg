@@ -76,8 +76,9 @@ class SimulationApp(ShowBase):
         elif self.foot_pos[1] > 100:
             self.walking_step = -10
             
+        self.foot_pos[0] += self.walking_step
         self.foot_pos[1] += self.walking_step
-        self.foot_pos[2] += self.walking_step / 2
+        self.foot_pos[2] += self.walking_step / 5
         self.leg.set_foot_position(self.foot_pos)
 
         # Clear the previous lines
@@ -94,11 +95,11 @@ class SimulationApp(ShowBase):
         shoulder_pos, arm_pos, forearm_pos, foot_pos = self.get_positions_from_leg()
         shoulder_angle, arm_angle, forearm_angle = self.get_angles_from_leg()
         self.shoulder_obj.set_pos(shoulder_pos)
-        self.shoulder_obj.set_hpr(-90.0, shoulder_angle, 0.0)
+        self.shoulder_obj.set_hpr(-90.0, -shoulder_angle, 0.0)
         self.arm_obj.set_pos(arm_pos)
-        self.arm_obj.set_hpr(-90.0, shoulder_angle, -arm_angle)
+        self.arm_obj.set_hpr(-90.0, -shoulder_angle, -arm_angle)
         self.forearm_obj.set_pos(forearm_pos)
-        self.forearm_obj.set_hpr(-90.0, shoulder_angle, -(arm_angle + forearm_angle))
+        self.forearm_obj.set_hpr(-90.0, -shoulder_angle, -(arm_angle + forearm_angle))
         
     
     # Return the main points positions of the leg

@@ -321,7 +321,7 @@ impl Leg {
                 // 4) Reconvert the intersection result to the 3D space.
                 self.forearm_vertical_pos = Vector3::new(self.params.get("LEG").unwrap().get("SHOULDER_LENGTH").unwrap().as_f64().unwrap() as f32, intersection_point.x, intersection_point.y);
                 // Reverse rotation
-                self.forearm_pos = Rotation3::from_axis_angle(&Vector3::y_axis(), -(self.shoulder_angle)) * self.forearm_vertical_pos;
+                self.forearm_pos = Rotation3::from_axis_angle(&Vector3::y_axis(), (self.shoulder_angle).to_radians()) * self.forearm_vertical_pos;
 
                 return Ok(());
         }
