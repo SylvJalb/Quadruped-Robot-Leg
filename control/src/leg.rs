@@ -173,7 +173,9 @@ impl Leg {
                 let err = self.update_positions();
                 if err.is_err() {
                         *self = leg_copy;
-                        return Err(Error::new(ErrorKind::Other, "Error while setting foot position. Previous state restored !"));
+                        println!("Error while setting foot position. Previous state restored !");
+                        println!("Error: {:?}", err);
+                        //return Err(Error::new(ErrorKind::Other, "Error while setting foot position. Previous state restored !"));
                 }
 
                 return Ok(());
@@ -195,8 +197,12 @@ impl Leg {
                 }
 
                 // To simplify the next calculations we simulate a rotation of shoulder to have the arm verticaly.
-                self.arm_vertical_pos = Rotation3::from_axis_angle(&Vector3::y_axis(), self.shoulder_angle) * self.arm_pos;
-                self.foot_vertical_pos = Rotation3::from_axis_angle(&Vector3::y_axis(), self.shoulder_angle) * self.foot_pos;
+                // We will apply the same rotation to the foot to have the same position
+                
+                self.arm_vertical_pos = Rotation3::from_axis_angle(&Vector3::y_axis(), (-self.shoulder_angle).to_radians()) * self.arm_pos;
+                self.foot_vertical_pos = Rotation3::from_axis_angle(&Vector3::y_axis(), (-self.shoulder_angle).to_radians()) * self.foot_pos;
+                println!("arm_vertical_pos : {:?}", self.arm_vertical_pos);
+                println!("foot_vertical_pos : {:?}", self.foot_vertical_pos);
                 
                 match self.calcul_forearm_position() {
                         Ok(_) => (),
@@ -253,10 +259,13 @@ impl Leg {
         Use SOHCAHTOA method
         */
         fn calcul_shoulder_angle(&mut self) -> Result<(), Error> {
-                let adj = self.arm_pos.x - self.shoulder_pos.x;
+                let opp = self.arm_pos.x - self.shoulder_pos.x;
                 let hyp = self.params.get("LEG").unwrap().get("SHOULDER_LENGTH").unwrap().as_f64().unwrap() as f32;
-                // Calculate the angle : cos(angle) = adj / hyp => angle = acos(adj / hyp)
-                self.shoulder_angle = -((adj/hyp).acos() * 180.0f32 / PI); // * 180.0f32 / PI -> to convert to degrees
+                // Calculate the angle :     sin(angle) = opp / hyp    =>    angle = asin(opp / hyp)
+                self.shoulder_angle = 90.0-((opp/hyp).asin() * 180.0f32 / PI); // * 180.0f32 / PI -> to convert to degrees
+                if self.arm_pos.z > self.shoulder_pos.z {
+                        self.shoulder_angle = -self.shoulder_angle;
+                }
                 return Ok(());
         }
 
@@ -283,15 +292,15 @@ impl Leg {
                 let delta = ((a_point.x - p_point.x).powi(2) + (a_point.y - p_point.y).powi(2)).sqrt();
                 // no intersecting
                 if delta > (p_radius + a_radius) {
-                        return Err(Error::new(ErrorKind::Other, "No intersecting"));
+                        return Err(Error::new(ErrorKind::Other, "No intersecting (delta superior)"));
                 }
                 // one circle within other
                 if delta < (p_radius - a_radius).abs() {
-                        return Err(Error::new(ErrorKind::Other, "No intersecting"));
+                        return Err(Error::new(ErrorKind::Other, "No intersecting (one circle within other)"));
                 }
                 // coincident circles
                 if delta == 0.0 && p_radius == a_radius {
-                        return Err(Error::new(ErrorKind::Other, "No intersecting"));
+                        return Err(Error::new(ErrorKind::Other, "No intersecting (coincident circles)"));
                 }
 
                 let a = ((p_radius.powi(2) - a_radius.powi(2)) + delta.powi(2))/(2.0*delta);
