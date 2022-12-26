@@ -1,7 +1,8 @@
 # Quadruped Robot (Only front right leg)
 <p align="middle">
-<img src="./images/leg.png" alt="Full 3D Leg" height="400"/>
-<img src="./images/leg_test.gif" alt="Leg Test" height="400"/>
+<img src="./images/leg.png" alt="Design" height="400"/>
+<img src="./images/demo_simu.gif" alt="Simulator Test" height="400"/>
+<img src="./images/leg_test.gif" alt="Real Test" height="400"/>
 </p>
 
 ## 🚨 Disclaimer
