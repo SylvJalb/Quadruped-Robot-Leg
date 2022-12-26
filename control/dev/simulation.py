@@ -1,6 +1,7 @@
 import sys
 from direct.showbase.ShowBase import ShowBase
-from panda3d.core import LineSegs, CardMaker, PointLight, loadPrcFile, BoundingSphere, NodePath
+from direct.gui.OnscreenText import OnscreenText
+from panda3d.core import LineSegs, CardMaker, PointLight, loadPrcFile, BoundingSphere, NodePath, TextNode
 
 import leg_controller
 from params import *
@@ -13,7 +14,7 @@ class SimulationApp(ShowBase):
         # Initialize the ShowBase class
         ShowBase.__init__(self)
 
-        self.foot_pos = [120.0, 30.0, -425.0]
+        self.foot_pos = [125.0, 30.0, -425.0]
 
         # create a new Leg instance
         self.leg = leg_controller.LegPy(self.foot_pos)
@@ -45,21 +46,32 @@ class SimulationApp(ShowBase):
         self.arm_obj.reparent_to(self.render)
         self.forearm_obj.reparent_to(self.render)
         self.update_models()
-
-        self.accept('v', self.show_camera)
-        self.accept('v-up', self.unshow_camera)
+        
+        self.taskMgr.add(self.update_camera, 'UpdateCamera', sort=2)
+        self.accept('v', self.unshow_camera)
         self.accept('escape', sys.exit)
     
     def run_walk(self):
         self.walking_step = -10
-        # Create a task to update the simulation
-        self.taskMgr.add(self.update_walk, 'UpdateWalk', sort=1)
-        self.run()
 
+        self.accept('w', self.start_walk)
+
+        # print the instructions on top left
+        self.instructions_text = OnscreenText(text='Press \'v\' : default view  | \'w\' : walk  | \'escape\' : exit', pos=(0.0, 0.9), scale=0.04, fg=(1.0, 0.1, 0.1, 1.0), mayChange=True)
+
+        self.run()
+    def start_walk(self):
+        self.taskMgr.add(self.update_walk, 'UpdateWalk', sort=1)
+        self.accept('w', self.stop_walk)
+    def stop_walk(self):
+        self.taskMgr.remove('UpdateWalk')
+        self.accept('w', self.start_walk)
     def show_camera(self):
-        self.taskMgr.add(self.update_camera, 'UpdateCamera', sort=1)
+        self.taskMgr.add(self.update_camera, 'UpdateCamera', sort=2)
+        self.accept('v', self.unshow_camera)
     def unshow_camera(self):
         self.taskMgr.remove('UpdateCamera')
+        self.accept('v', self.show_camera)
 
     def update_camera(self, task):
         # Set the camera position and orientation
@@ -78,7 +90,7 @@ class SimulationApp(ShowBase):
             
         self.foot_pos[0] += self.walking_step
         self.foot_pos[1] += self.walking_step
-        self.foot_pos[2] += self.walking_step / 5
+        self.foot_pos[2] += self.walking_step / 2
         self.leg.set_foot_position(self.foot_pos)
 
         # Clear the previous lines

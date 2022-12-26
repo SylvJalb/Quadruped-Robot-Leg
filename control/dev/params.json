@@ -14,7 +14,7 @@
         "Y_MAX": 300,
         "Z_MIN": -400,
         "Z_MAX": 50,
-        "SHOULDER_LENGTH": 120,
+        "SHOULDER_LENGTH": 125,
         "ARM_LENGTH": 200,
         "FOREARM_LENGTH": 320,
         "SHOULDER_MIN_ANGLE": -90,
