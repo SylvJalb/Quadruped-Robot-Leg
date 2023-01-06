@@ -1,6 +1,6 @@
 [package]
 name = "leg_controller"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 
 [lib]
@@ -14,7 +14,7 @@ path = "src/leg_py_lib.rs"
 crate-type = ["cdylib"]
 
 [dependencies]
-odrive-rs = "1.1.0"
+serialport = "3.3.0"
 serde_json = "1.0.48"
 nalgebra = "0.31.3"
 pyo3 = { version = "0.17.3", features = ["extension-module"] }

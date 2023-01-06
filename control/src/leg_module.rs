@@ -4,14 +4,12 @@ use std::fs::File;
 use std::io::{BufReader, Error, ErrorKind};
 use std::f32::consts::PI;
 use nalgebra::{Vector3, Rotation3};
-use odrive_rs::enumerations::AxisID;
 
-pub struct Leg {
+
+
+
+pub struct LegModule {
         foot_pos: Vector3<f32>,
-        odrives_ready: bool,
-        shoulder: AxisID,
-        arm: AxisID,
-        forearm: AxisID,
         shoulder_pos: Vector3<f32>,
         arm_pos: Vector3<f32>,
         forearm_pos: Vector3<f32>,
@@ -21,28 +19,24 @@ pub struct Leg {
         arm_vertical_pos: Vector3<f32>,
         forearm_vertical_pos: Vector3<f32>,
         foot_vertical_pos: Vector3<f32>,
-        params: serde_json::Value
+        params: serde_json::Value,
 }
 
 
-impl Debug for Leg {
+impl Debug for LegModule {
         fn fmt(&self, f: &mut Formatter) -> Result<(), std::fmt::Error> {
                 write!(f, "Leg {{\n\tfoot_pos:\t{:?} \n\n\tforearm_pos:\t{:?} \n\tforearm_angle:\t{:?} \n\n\tarm_pos:\t{:?} \n\tarm_angle:\t{:?} \n\n\tshoulder_pos:\t{:?} \n\tshoulder_angle:\t{:?} \n}}", self.foot_pos, self.forearm_pos, self.forearm_angle, self.arm_pos, self.arm_angle, self.shoulder_pos, self.shoulder_angle)
         }
 }
 
-impl Leg {
+impl LegModule {
         /*
         Initialize the leg
         foot_position : position of foot
         */
         pub fn new(foot_position: Vector3<f32>) -> Self {
-                let mut new_leg = Leg {
+                let mut new_leg = LegModule {
                         foot_pos: foot_position,
-                        odrives_ready: false,
-                        shoulder: AxisID::Zero,
-                        arm: AxisID::Zero,
-                        forearm: AxisID::Zero,
                         shoulder_pos: Vector3::zeros(),
                         arm_pos: Vector3::zeros(),
                         forearm_pos: Vector3::zeros(),
@@ -52,7 +46,7 @@ impl Leg {
                         arm_vertical_pos: Vector3::zeros(),
                         foot_vertical_pos: Vector3::zeros(),
                         forearm_vertical_pos: Vector3::zeros(),
-                        params: serde_json::Value::Null
+                        params: serde_json::Value::Null,
                 };
 
 
@@ -65,81 +59,7 @@ impl Leg {
                         Ok(_) => (),
                         Err(e) => println!("Error: {:?}", e)
                 }
-
-                if new_leg.params.get("MODE").unwrap() == "motor" {
-                        // TO DO: find and setup odrives cards
-                        println!("Odrives not yet implemented");
-                } else {
-                        println!("Simulation mode");
-                        new_leg.odrives_ready = false;
-                }
                 return new_leg;
-        }
-
-        /*
-        Calibrate the leg
-        */
-        pub fn calibrate(&self) -> Result<(), Error> {
-                /*
-                if self.odrives_ready {
-                        println!("Calibrating :");
-
-                        // Calibrate shoulder
-                        println!("	shoulder...  ");
-                        let mut attempt = 1;
-                        while !self.shoulder.motor.is_calibrated {
-                                println!("		status : {:?} ", self.shoulder.motor.is_calibrated);
-                                if attempt > 3 {
-                                        return Err(Error::new(ErrorKind::Other, "Calibration failed on shoulder"));
-                                }
-                                run_calibration(self.shoulder);
-                                attempt += 1;
-                                sleep(10);
-                        }
-                        sleep(5);
-                        println!("		status : {:?} ", self.shoulder.motor.is_calibrated);
-                        
-                        // Calibrate arm
-                        println!("	arm...  ");
-                        attempt = 1;
-                        while !self.arm.motor.is_calibrated {
-                                println!("		status : {:?} ", self.arm.motor.is_calibrated);
-                                if attempt > 3 {
-                                        return Err(Error::new(ErrorKind::Other, "Calibration failed on arm"));
-                                }
-                                run_calibration(self.arm);
-                                attempt += 1;
-                                sleep(10);
-                        }
-                        sleep(5);
-                        println!("		status : {:?} ", self.arm.motor.is_calibrated);
-                        
-                        // Calibrate forearm
-                        println!("	forearm...");
-                        attempt = 1;
-                        while !self.forearm.motor.is_calibrated {
-                                println!("		status : {:?} ", self.forearm.motor.is_calibrated);
-                                if attempt > 3 {
-                                        return Err(Error::new(ErrorKind::Other, "Calibration failed on forearm"));
-                                }
-                                run_calibration(self.forearm);
-                                attempt += 1;
-                                sleep(10);
-                        }
-                        sleep(5);
-                        println!("		status : {:?} ", self.forearm.motor.is_calibrated);
-                        
-                        println!("Calibration done !");
-
-                        blocked_motor_mode(self.shoulder);
-                        blocked_motor_mode(self.arm);
-                        blocked_motor_mode(self.forearm);
-                        println!("Motors blocked !");
-                } else {
-                        return Err(Error::new(ErrorKind::Other, "ODrives not Ready"));
-                }
-                */
-                return Ok(());
         }
 
         /*
@@ -148,12 +68,8 @@ impl Leg {
         */
         pub fn set_foot_position(&mut self, foot_position: &Vector3<f32>) -> Result<(), Error> {
                 // get state in memory
-                let leg_copy = Leg {
+                let leg_copy = LegModule {
                         foot_pos: self.foot_pos,
-                        odrives_ready: self.odrives_ready,
-                        shoulder: self.shoulder,
-                        arm: self.arm,
-                        forearm: self.forearm,
                         shoulder_pos: self.shoulder_pos,
                         arm_pos: self.arm_pos,
                         forearm_pos: self.forearm_pos,
@@ -215,13 +131,6 @@ impl Leg {
                 match self.calcul_forearm_angle() {
                         Ok(_) => (),
                         Err(e) => return Err(e)
-                }
-
-                if self.odrives_ready {
-                        // Update the motors positions
-                        // self.shoulder.controller.input_pos = ((self.shoulder_angle/360)/REDUCTION_COEF);
-                        // self.arm.controller.input_pos = ((self.arm_angle/360)/REDUCTION_COEF);
-                        // self.forearm.controller.input_pos = ((self.forearm_angle/360)/REDUCTION_COEF);
                 }
                 return Ok(());
         }

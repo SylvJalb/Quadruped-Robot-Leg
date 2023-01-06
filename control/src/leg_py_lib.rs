@@ -1,7 +1,9 @@
 use nalgebra::Vector3;
 use pyo3::prelude::*;
 use pyo3::types::{PyList, PyFloat};
-pub mod leg;
+
+#[path = "./leg_module.rs"] mod leg_module;
+use leg_module::{LegModule};
 
 #[pymodule]
 fn leg_controller(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
@@ -11,7 +13,7 @@ fn leg_controller(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
 
 #[pyclass]
 pub struct LegPy {
-    leg: leg::Leg
+    leg: LegModule
 }
 
 #[pymethods]
@@ -20,7 +22,7 @@ impl LegPy {
     fn new(foot_position: &PyList) -> Self {
         let v: Vec<f32> = foot_position.extract().unwrap();
         LegPy {
-            leg: leg::Leg::new(Vector3::new(v[0], v[1], v[2]))
+            leg: LegModule::new(Vector3::new(v[0], v[1], v[2]))
         }
     }
 
