@@ -1,6 +1,6 @@
 # Environements
-- **Production** code, developed in **Rust** (in `src` directory)      
-- **Development** and **simulation** code, developed in **Python**. (in `dev` directory)        
+- The **Production** code, developed in **Rust**, is in the `./src/` directory      
+- The **Development** and **Simulation** code, developed in **Python**, is in the `./dev/` directory        
 It use the production Leg class, built with [PyO3](https://github.com/PyO3/pyo3), to have a Python library thanks to [maturin](https://github.com/PyO3/maturin).     
 
 # Rust Setup
@@ -43,4 +43,4 @@ cargo build
 
 Make sure you can do ssh connection with the raspberry pi and get the IP address of the raspberry pi.   
 
-Copy the binary file `./target/debug/leg_control` and the parameters file `params.json` to the raspberry pi with `scp`.     
+Copy the binary file `./target/debug/leg_controler` and the parameters file `params.json` to the raspberry pi with the `scp` command.     

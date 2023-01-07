@@ -26,5 +26,9 @@
         "FOREARM_MAX_ANGLE": 90,
         "SHOULDER_POS": [0, 0, 0]
     },
-    "MODE": "simulation"
+    "PATHS": {
+        "SHOULDER_USB": "/dev/ttyUSB0",
+        "ARM_USB": "/dev/ttyUSB1",
+        "FOREARM_USB": "/dev/ttyUSB1"
+    }
 }

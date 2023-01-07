@@ -27,17 +27,17 @@ impl RobotModule {
 
             // odrives stuff
             odrives_ready: false,
-            shoulder_joint: MotorModule::new("shoulder".to_owned(), AxisID::Zero, "/dev/ttyACM0").expect("Error creating shoulder joint"),
-            arm_joint: MotorModule::new("arm".to_owned(), AxisID::Zero, "/dev/ttyACM1").expect("Error creating arm joint"),
-            forearm_joint: MotorModule::new("forearm".to_owned(), AxisID::One, "/dev/ttyACM1").expect("Error creating forearm joint"),
+            shoulder_joint: MotorModule::new("shoulder".to_owned(), AxisID::Zero).expect("Error creating shoulder joint"),
+            arm_joint: MotorModule::new("arm".to_owned(), AxisID::Zero).expect("Error creating arm joint"),
+            forearm_joint: MotorModule::new("forearm".to_owned(), AxisID::One).expect("Error creating forearm joint"),
         }
     }
 
     pub fn init_robot(&mut self) -> Result<(), Error> {
         // init the odrives
-        self.shoulder_joint.setup().expect("Error setting up shoulder joint");
-        self.arm_joint.setup().expect("Error setting up arm joint");
-        self.forearm_joint.setup().expect("Error setting up forearm joint");
+        self.shoulder_joint.configure().expect("Error setting up shoulder joint");
+        self.arm_joint.configure().expect("Error setting up arm joint");
+        self.forearm_joint.configure().expect("Error setting up forearm joint");
 
         self.shoulder_joint.calibrate().expect("Error during shoulder calibration");
         self.arm_joint.calibrate().expect("Error during arm calibration");
@@ -64,11 +64,11 @@ impl RobotModule {
             self.leg.set_foot_position(foot_position).expect("Error when foot position is calculated");
 
             // Update the motors positions
-            self.shoulder_joint.set_position_and_velocity(self.leg.get_shoulder_angle()/360.0, 3.0)
+            self.shoulder_joint.set_position_and_velocity(self.leg.get_shoulder_angle(), 3.0)
                 .expect("Error setting shoulder position");
-            self.arm_joint.set_position_and_velocity(self.leg.get_arm_angle()/360.0, 3.0)
+            self.arm_joint.set_position_and_velocity(self.leg.get_arm_angle(), 3.0)
                 .expect("Error setting arm position");
-            self.forearm_joint.set_position_and_velocity(self.leg.get_forearm_angle()/360.0, 3.0)
+            self.forearm_joint.set_position_and_velocity(self.leg.get_forearm_angle(), 3.0)
                 .expect("Error setting forearm position");
         } else {
             return Err(Error::new(ErrorKind::Other, "Odrives not ready"));

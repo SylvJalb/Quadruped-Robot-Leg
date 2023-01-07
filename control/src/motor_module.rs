@@ -1,3 +1,4 @@
+use std::f32::consts::PI;
 use std::path::Path;
 use std::io::{BufReader, Error};
 use std::fs::File;
@@ -13,6 +14,7 @@ pub struct MotorModule {
     axis_id: AxisID,
     odrive: ODrive<TTYPort>,
     odrive_ready: bool,
+    params: serde_json::Value,
 }
 
 impl Debug for MotorModule {
@@ -22,13 +24,17 @@ impl Debug for MotorModule {
 }
 
 impl MotorModule {
-    pub fn new(name: String, axis_id: AxisID, path: &str)-> Result<MotorModule, Error> {
+    pub fn new(name: String, axis_id: AxisID)-> Result<MotorModule, Error> {
+        let file = File::open("./params.json").expect("file should open read only");
+        let reader = BufReader::new(file);
+        let params: serde_json::Value = serde_json::from_reader(reader).expect("file should be proper JSON");
+
         // Create serial port settings
         let mut settings = SerialPortSettings::default();
         // ODrive uses 115200 baud
         settings.baud_rate = 115_200;
         // Create serial port
-        let serial = TTYPort::open(Path::new(path), &settings).expect("Failed to open usb port");
+        let serial = TTYPort::open(Path::new(params.get("PATHS").unwrap().get(name.to_ascii_uppercase() + "_USB").unwrap().as_str().unwrap()), &settings).expect("Failed to open usb port");
         // Create and return ODrive
         let odrive = ODrive::new(serial);
 
@@ -37,21 +43,20 @@ impl MotorModule {
             axis_id: axis_id,
             odrive: odrive,
             odrive_ready: false,
+            params: params,
         })
     }
 
-    pub fn setup(&mut self)-> Result<(), Error> {
-        let file = File::open("./params.json").expect("file should open read only");
-        let reader = BufReader::new(file);
-        let params: serde_json::Value = serde_json::from_reader(reader).expect("file should be proper JSON");
-    
-        self.odrive.set_axis_property(self.axis_id, "controller.config.vel_limit", params.get("MOTORS").unwrap().get("VEL_LIMIT").unwrap().as_f64().unwrap() as f32).unwrap();
-        self.odrive.set_axis_property(self.axis_id, "encoder.config.cpr", params.get("MOTORS").unwrap().get("CPR").unwrap().as_u64().unwrap() as u16).unwrap();
-        self.odrive.set_axis_property(self.axis_id, "motor.config.pole_pairs", params.get("MOTORS").unwrap().get("POLE_PAIRS").unwrap().as_u64().unwrap() as u16).unwrap();
-        self.odrive.set_axis_property(self.axis_id, "motor.config.current_lim", params.get("MOTORS").unwrap().get("CURRENT_LIM").unwrap().as_f64().unwrap() as f32).unwrap();
-        self.odrive.set_axis_property(self.axis_id, "motor.config.calibration_current", params.get("MOTORS").unwrap().get("CURRENT_LIM").unwrap().as_f64().unwrap() as f32).unwrap();
-        self.odrive.set_axis_property(self.axis_id, "motor.config.resistance_calib_max_voltage", params.get("MOTORS").unwrap().get("CALIB_VOLTAGE_LIM").unwrap().as_f64().unwrap() as f32).unwrap();
-        self.odrive.set_axis_property(self.axis_id, "motor.config.torque_constant", params.get("MOTORS").unwrap().get("TORQUE_CONSTANT").unwrap().as_f64().unwrap() as f32).unwrap();
+    // Configure the motor
+    // Use the params.json file to set the motor properties
+    pub fn configure(&mut self)-> Result<(), Error> {
+        self.odrive.set_axis_property(self.axis_id, "controller.config.vel_limit", self.params.get("MOTORS").unwrap().get("VEL_LIMIT").unwrap().as_f64().unwrap() as f32).unwrap();
+        self.odrive.set_axis_property(self.axis_id, "encoder.config.cpr", self.params.get("MOTORS").unwrap().get("CPR").unwrap().as_u64().unwrap() as u16).unwrap();
+        self.odrive.set_axis_property(self.axis_id, "motor.config.pole_pairs", self.params.get("MOTORS").unwrap().get("POLE_PAIRS").unwrap().as_u64().unwrap() as u16).unwrap();
+        self.odrive.set_axis_property(self.axis_id, "motor.config.current_lim", self.params.get("MOTORS").unwrap().get("CURRENT_LIM").unwrap().as_f64().unwrap() as f32).unwrap();
+        self.odrive.set_axis_property(self.axis_id, "motor.config.calibration_current", self.params.get("MOTORS").unwrap().get("CURRENT_LIM").unwrap().as_f64().unwrap() as f32).unwrap();
+        self.odrive.set_axis_property(self.axis_id, "motor.config.resistance_calib_max_voltage", self.params.get("MOTORS").unwrap().get("CALIB_VOLTAGE_LIM").unwrap().as_f64().unwrap() as f32).unwrap();
+        self.odrive.set_axis_property(self.axis_id, "motor.config.torque_constant", self.params.get("MOTORS").unwrap().get("TORQUE_CONSTANT").unwrap().as_f64().unwrap() as f32).unwrap();
         self.odrive.set_axis_property(self.axis_id, "config.startup_motor_calibration", false).unwrap();
         self.odrive.set_axis_property(self.axis_id, "config.startup_encoder_index_search", false).unwrap();
         self.odrive.set_axis_property(self.axis_id, "config.startup_encoder_offset_calibration", false).unwrap();
@@ -66,6 +71,7 @@ impl MotorModule {
         Ok(())
     }
     
+    // Run the motor calibration routine
     pub fn calibrate(&mut self)-> Result<(), Error> {
         // Calibrate ODrive
         self.odrive.run_state(self.axis_id, AxisState::MotorCalibration, true).unwrap();
@@ -77,6 +83,7 @@ impl MotorModule {
         Ok(())
     }
 
+    // Arm the motor to be ready to move
     pub fn arm(&mut self)-> Result<(), Error> {
         // Arm ODrive
         self.odrive.run_state(self.axis_id, AxisState::ClosedLoopControl, false).unwrap();
@@ -84,8 +91,12 @@ impl MotorModule {
         Ok(())
     }
 
+    // Set the motor position and velocity
+    // Position is given in degrees
     pub fn set_position_and_velocity(&mut self, position: f32, velocity: f32)-> Result<(), Error> {
-        self.odrive.set_position_p(self.axis_id, position, Some(velocity), None).unwrap();
+        // Set position and velocity
+        // Position is in degrees, so convert to radians
+        self.odrive.set_position_p(self.axis_id, position * PI / 180.0, Some(velocity), None).unwrap();
         Ok(())
     }
 
