@@ -17,4 +17,9 @@ crate-type = ["cdylib"]
 serialport = "3.3.0"
 serde_json = "1.0.48"
 nalgebra = "0.31.3"
+libudev-sys = "0.1.4"
 pyo3 = { version = "0.17.3", features = ["extension-module"] }
+
+# Remove unused dependencies from the final binary.
+[target.armv7-unknown-linux-gnueabihf.dependencies]
+pyo3 = { version = "0.17.3", features = ["extension-module", "abi3-py37"] }

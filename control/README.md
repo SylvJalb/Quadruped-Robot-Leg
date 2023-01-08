@@ -6,6 +6,11 @@ It use the production Leg class, built with [PyO3](https://github.com/PyO3/pyo3)
 # Rust Setup
 Install Rust with [rustup](https://rustup.rs/).     
 
+Install the cross-compilation toolchain for the raspberry pi:    
+```bash
+cargo install cross
+```     
+
 Build the project, here, like this:    
 ```bash
 cargo build
@@ -36,11 +41,21 @@ python test.py
 ```
 
 # Deploy on the robot (raspberry pi)
+Install Cargo (on Linux and macOS systems)   
+``` bash
+curl https://sh.rustup.rs -sSf | sh
+```
+
 Build the rust code in your computer:
 ``` bash
-cargo build
+docker build -t crossbuild:local .
+cross build --target=armv7-unknown-linux-gnueabihf
 ```
 
 Make sure you can do ssh connection with the raspberry pi and get the IP address of the raspberry pi.   
 
-Copy the binary file `./target/debug/leg_controler` and the parameters file `params.json` to the raspberry pi with the `scp` command.     
+Copy the binary file `./target/armv7-unknown-linux-gnueabihf/debug/leg_controller` and the parameters file `params.json` to the raspberry pi with the `scp` command.     
+``` bash
+scp ./target/armv7-unknown-linux-gnueabihf/debug/leg_controller user@raspberrypi.local:leg_controller
+scp ./params.json user@raspberrypi.local:params.json
+```

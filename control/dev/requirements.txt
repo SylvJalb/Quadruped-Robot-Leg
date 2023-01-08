@@ -3,3 +3,4 @@ matplotlib
 keyboard
 maturin
 panda3d
+patchelf
