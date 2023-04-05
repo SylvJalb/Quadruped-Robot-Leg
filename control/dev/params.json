@@ -1,34 +1,34 @@
 {
     "MOTORS": {
         "VEL_LIMIT": 4.0,
-        "CPR": 4000,
-        "POLE_PAIRS": 20,
+        "CPR": 4000.0,
+        "POLE_PAIRS": 20.0,
         "CURRENT_LIM": 40.0,
         "CALIB_VOLTAGE_LIM": 10.0,
         "TORQUE_CONSTANT": 0.0827,
         "REDUCTION_COEF": 0.125
     },
     "LEG": {
-        "X_MIN": -100,
-        "X_MAX": 400,
-        "Y_MIN": -300,
-        "Y_MAX": 300,
-        "Z_MIN": -400,
-        "Z_MAX": 50,
-        "SHOULDER_LENGTH": 125,
-        "ARM_LENGTH": 200,
-        "FOREARM_LENGTH": 320,
-        "SHOULDER_MIN_ANGLE": -90,
-        "SHOULDER_MAX_ANGLE": 90,
-        "ARM_MIN_ANGLE": -90,
-        "ARM_MAX_ANGLE": 90,
-        "FOREARM_MIN_ANGLE": -90,
-        "FOREARM_MAX_ANGLE": 90,
-        "SHOULDER_POS": [0, 0, 0]
+        "X_MIN": -100.0,
+        "X_MAX": 400.0,
+        "Y_MIN": -300.0,
+        "Y_MAX": 300.0,
+        "Z_MIN": -400.0,
+        "Z_MAX": 50.0,
+        "SHOULDER_LENGTH": 125.0,
+        "ARM_LENGTH": 200.0,
+        "FOREARM_LENGTH": 320.0,
+        "SHOULDER_MIN_ANGLE": -90.0,
+        "SHOULDER_MAX_ANGLE": 90.0,
+        "ARM_MIN_ANGLE": -90.0,
+        "ARM_MAX_ANGLE": 90.0,
+        "FOREARM_MIN_ANGLE": -90.0,
+        "FOREARM_MAX_ANGLE": 90.0,
+        "SHOULDER_POS": [0.0, 0.0, 0.0]
     },
     "PATHS": {
-        "SHOULDER_USB": "/dev/ttyUSB0",
-        "ARM_USB": "/dev/ttyUSB1",
-        "FOREARM_USB": "/dev/ttyUSB1"
+        "SHOULDER_USB": "/dev/ttyACM0",
+        "ARM_USB": "/dev/ttyACM1",
+        "FOREARM_USB": "/dev/ttyACM1"
     }
 }

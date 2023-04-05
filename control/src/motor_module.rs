@@ -50,13 +50,14 @@ impl MotorModule {
     // Configure the motor
     // Use the params.json file to set the motor properties
     pub fn configure(&mut self)-> Result<(), Error> {
-        self.odrive.set_axis_property(self.axis_id, "controller.config.vel_limit", self.params.get("MOTORS").unwrap().get("VEL_LIMIT").unwrap().as_f64().unwrap() as f32).unwrap();
-        self.odrive.set_axis_property(self.axis_id, "encoder.config.cpr", self.params.get("MOTORS").unwrap().get("CPR").unwrap().as_u64().unwrap() as u16).unwrap();
-        self.odrive.set_axis_property(self.axis_id, "motor.config.pole_pairs", self.params.get("MOTORS").unwrap().get("POLE_PAIRS").unwrap().as_u64().unwrap() as u16).unwrap();
-        self.odrive.set_axis_property(self.axis_id, "motor.config.current_lim", self.params.get("MOTORS").unwrap().get("CURRENT_LIM").unwrap().as_f64().unwrap() as f32).unwrap();
-        self.odrive.set_axis_property(self.axis_id, "motor.config.calibration_current", self.params.get("MOTORS").unwrap().get("CURRENT_LIM").unwrap().as_f64().unwrap() as f32).unwrap();
-        self.odrive.set_axis_property(self.axis_id, "motor.config.resistance_calib_max_voltage", self.params.get("MOTORS").unwrap().get("CALIB_VOLTAGE_LIM").unwrap().as_f64().unwrap() as f32).unwrap();
-        self.odrive.set_axis_property(self.axis_id, "motor.config.torque_constant", self.params.get("MOTORS").unwrap().get("TORQUE_CONSTANT").unwrap().as_f64().unwrap() as f32).unwrap();
+        println!("{}", self.odrive.get_config_property("encoder.config.cpr").unwrap().to_string());
+        self.odrive.set_axis_property(self.axis_id, "controller.config.vel_limit", self.params.get("MOTORS").unwrap().get("VEL_LIMIT").unwrap()).unwrap();
+        self.odrive.set_axis_property(self.axis_id, "encoder.config.cpr", self.params.get("MOTORS").unwrap().get("CPR").unwrap()).unwrap();
+        self.odrive.set_axis_property(self.axis_id, "motor.config.pole_pairs", self.params.get("MOTORS").unwrap().get("POLE_PAIRS").unwrap()).unwrap();
+        self.odrive.set_axis_property(self.axis_id, "motor.config.current_lim", self.params.get("MOTORS").unwrap().get("CURRENT_LIM").unwrap()).unwrap();
+        self.odrive.set_axis_property(self.axis_id, "motor.config.calibration_current", self.params.get("MOTORS").unwrap().get("CURRENT_LIM").unwrap()).unwrap();
+        self.odrive.set_axis_property(self.axis_id, "motor.config.resistance_calib_max_voltage", self.params.get("MOTORS").unwrap().get("CALIB_VOLTAGE_LIM").unwrap()).unwrap();
+        self.odrive.set_axis_property(self.axis_id, "motor.config.torque_constant", self.params.get("MOTORS").unwrap().get("TORQUE_CONSTANT").unwrap()).unwrap();
         self.odrive.set_axis_property(self.axis_id, "config.startup_motor_calibration", false).unwrap();
         self.odrive.set_axis_property(self.axis_id, "config.startup_encoder_index_search", false).unwrap();
         self.odrive.set_axis_property(self.axis_id, "config.startup_encoder_offset_calibration", false).unwrap();
