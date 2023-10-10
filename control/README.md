@@ -59,3 +59,31 @@ Copy the binary file `./target/armv7-unknown-linux-gnueabihf/debug/leg_controlle
 scp ./target/armv7-unknown-linux-gnueabihf/debug/leg_controller user@raspberrypi.local:leg_controller
 scp ./params.json user@raspberrypi.local:params.json
 ```
+
+# Upgrade th firmware of an ODrive 3.6 controller
+
+1. Download your firmware from the [ODrive website](https://docs.odriverobotics.com/releases/firmware) or from the [ODrive Github](https://github.com/odriverobotics/ODrive/releases).
+
+2. Convert the firmware to a binary file:
+``` bash
+sudo apt install binutils-arm-none-eabi
+arm-none-eabi-objcopy -O binary file.elf file.bin
+```
+3. Switch to the `DFU` mode. (With the little switch on the ODrive board, near the USB port)
+
+4. Install the `dfu-util` tool:
+``` bash
+sudo apt install dfu-util
+```
+
+5. Plug the ODrive to the computer, with USB cable. But don't power the ODrive with the power supply.
+
+6. Flash the firmware:
+``` bash
+dfu-util -v -w -R -a 0 -d 0483:df11 -s 0x08000000:leave -D file.bin
+```
+
+7. Switch on the ODrive power supply.   
+Wait for the firmware to be flashed.
+
+8. At the end, turn off the ODrive power supply and switch back to the `RUN` mode.
